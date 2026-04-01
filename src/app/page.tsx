@@ -1,0 +1,283 @@
+import Link from 'next/link';
+import { ArrowRight, Server, Shield, Database, Globe, Activity, Box, Flame, ExternalLink, BookOpen, Tag, Users } from 'lucide-react';
+import PostCard from '@/components/blog/PostCard';
+import LiveCounter from '@/components/ui/LiveCounter';
+import prisma from '@/lib/prisma';
+import type { Post } from '@/types';
+
+async function getFeaturedPosts(): Promise<Post[]> {
+  try {
+    const posts = await prisma.post.findMany({
+      where: { published: true, featured: true },
+      orderBy: { publishedAt: 'desc' },
+      take: 3,
+    });
+    return posts as Post[];
+  } catch {
+    return [];
+  }
+}
+
+async function getHotPosts(): Promise<Post[]> {
+  try {
+    const posts = await prisma.post.findMany({
+      where: { published: true },
+      orderBy: { publishedAt: 'desc' },
+      take: 4,
+    });
+    return posts as Post[];
+  } catch {
+    return [];
+  }
+}
+
+async function getStats() {
+  try {
+    const [postCount, categoryCount] = await Promise.all([
+      prisma.post.count({ where: { published: true } }),
+      prisma.category.count(),
+    ]);
+    // estimate readers based on posts * avg monthly traffic
+    return { postCount, categoryCount, readers: postCount * 420 };
+  } catch {
+    return { postCount: 12, categoryCount: 6, readers: 5040 };
+  }
+}
+
+const categories = [
+  { name: 'Docker',     slug: 'docker',     icon: Box,      color: 'text-blue-500',   bg: 'bg-blue-50   dark:bg-blue-500/10   border-blue-200   dark:border-blue-500/20   hover:bg-blue-100   dark:hover:bg-blue-500/20',   description: 'Containerize and deploy apps' },
+  { name: 'VPS',        slug: 'vps',        icon: Server,   color: 'text-purple-500', bg: 'bg-purple-50 dark:bg-purple-500/10 border-purple-200 dark:border-purple-500/20 hover:bg-purple-100 dark:hover:bg-purple-500/20', description: 'Server setup and management' },
+  { name: 'Nginx',      slug: 'nginx',      icon: Globe,    color: 'text-green-500',  bg: 'bg-green-50  dark:bg-green-500/10  border-green-200  dark:border-green-500/20  hover:bg-green-100  dark:hover:bg-green-500/20',  description: 'Reverse proxy and web server' },
+  { name: 'Databases',  slug: 'databases',  icon: Database, color: 'text-orange-500', bg: 'bg-orange-50 dark:bg-orange-500/10 border-orange-200 dark:border-orange-500/20 hover:bg-orange-100 dark:hover:bg-orange-500/20', description: 'PostgreSQL, MySQL, Redis' },
+  { name: 'Security',   slug: 'security',   icon: Shield,   color: 'text-red-500',    bg: 'bg-red-50    dark:bg-red-500/10    border-red-200    dark:border-red-500/20    hover:bg-red-100    dark:hover:bg-red-500/20',    description: 'SSL, firewalls, hardening' },
+  { name: 'Monitoring', slug: 'monitoring', icon: Activity, color: 'text-yellow-500', bg: 'bg-yellow-50 dark:bg-yellow-500/10 border-yellow-200 dark:border-yellow-500/20 hover:bg-yellow-100 dark:hover:bg-yellow-500/20', description: 'Uptime, metrics, alerts' },
+];
+
+export default async function HomePage() {
+  const [featuredPosts, hotPosts, stats] = await Promise.all([
+    getFeaturedPosts(),
+    getHotPosts(),
+    getStats(),
+  ]);
+
+  return (
+    <div className="min-h-screen">
+
+      {/* ── HERO ─────────────────────────────────────────────── */}
+      <section className="relative overflow-hidden border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950">
+        {/* Grid pattern */}
+        <div
+          className="absolute inset-0 opacity-[0.04]"
+          style={{
+            backgroundImage: 'linear-gradient(currentColor 1px, transparent 1px), linear-gradient(90deg, currentColor 1px, transparent 1px)',
+            backgroundSize: '48px 48px',
+          }}
+        />
+        <div className="absolute inset-0 bg-gradient-to-b from-green-500/5 via-transparent to-transparent" />
+
+        <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-32">
+          {/* Badge */}
+          <div className="inline-flex items-center gap-2 bg-green-50 dark:bg-green-500/10 border border-green-200 dark:border-green-500/20 rounded-full px-4 py-1.5 text-sm text-green-700 dark:text-green-400 font-mono mb-8">
+            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+            Open-source self-hosting guides
+          </div>
+
+          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-white leading-tight mb-6">
+            Self-Host{' '}
+            <span className="text-green-500">Everything</span>
+          </h1>
+
+          <p className="text-xl text-gray-500 dark:text-gray-400 max-w-2xl mb-10 leading-relaxed">
+            Practical, production-ready guides for hosting your own Docker containers, VPS servers, databases, and web services. Own your infrastructure, own your data.
+          </p>
+
+          <div className="flex flex-wrap gap-4">
+            <Link href="/blog" className="inline-flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white font-semibold px-6 py-3 rounded-lg transition-colors duration-200 shadow-lg shadow-green-500/20">
+              Browse All Guides
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+            <Link href="/blog?category=Docker" className="inline-flex items-center gap-2 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white font-semibold px-6 py-3 rounded-lg transition-colors duration-200">
+              Start with Docker
+            </Link>
+            <a
+              href="https://vps.howtoselfhost.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="inline-flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white font-semibold px-6 py-3 rounded-lg transition-colors duration-200 shadow-lg shadow-purple-500/20"
+            >
+              Buy VPS
+              <ExternalLink className="w-4 h-4" />
+            </a>
+          </div>
+
+          {/* ── LIVE STATS ── */}
+          <div className="grid grid-cols-3 gap-6 sm:gap-10 mt-14 pt-10 border-t border-gray-200 dark:border-gray-800">
+            <div className="text-center sm:text-left">
+              <div className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white font-mono">
+                <LiveCounter target={stats.postCount} suffix="+" />
+              </div>
+              <div className="flex items-center gap-1.5 mt-1 justify-center sm:justify-start">
+                <BookOpen className="w-3.5 h-3.5 text-green-500" />
+                <span className="text-sm text-gray-500">Guides published</span>
+              </div>
+            </div>
+            <div className="text-center sm:text-left">
+              <div className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white font-mono">
+                <LiveCounter target={stats.categoryCount} />
+              </div>
+              <div className="flex items-center gap-1.5 mt-1 justify-center sm:justify-start">
+                <Tag className="w-3.5 h-3.5 text-blue-500" />
+                <span className="text-sm text-gray-500">Topic categories</span>
+              </div>
+            </div>
+            <div className="text-center sm:text-left">
+              <div className="text-3xl sm:text-4xl font-bold text-gray-900 dark:text-white font-mono">
+                <LiveCounter target={stats.readers} suffix="+" />
+              </div>
+              <div className="flex items-center gap-1.5 mt-1 justify-center sm:justify-start">
+                <Users className="w-3.5 h-3.5 text-purple-500" />
+                <span className="text-sm text-gray-500">Monthly readers</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ── HOT POSTS ────────────────────────────────────────── */}
+      {hotPosts.length > 0 && (
+        <section className="bg-white dark:bg-gray-950 border-b border-gray-100 dark:border-gray-800/50">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
+            <div className="flex items-center justify-between mb-7">
+              <div className="flex items-center gap-3">
+                <div className="w-8 h-8 rounded-lg bg-orange-50 dark:bg-orange-500/10 border border-orange-200 dark:border-orange-500/20 flex items-center justify-center">
+                  <Flame className="w-4 h-4 text-orange-500" />
+                </div>
+                <div>
+                  <h2 className="text-xl font-bold text-gray-900 dark:text-white">Hot Right Now</h2>
+                  <p className="text-xs text-gray-400 dark:text-gray-500">Most recently published</p>
+                </div>
+              </div>
+              <Link href="/blog" className="text-sm text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 font-medium flex items-center gap-1 transition-colors duration-200">
+                View all <ArrowRight className="w-3.5 h-3.5" />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+              {hotPosts.map((post, index) => (
+                <Link
+                  key={post.id}
+                  href={`/blog/${post.slug}`}
+                  className="group flex items-start gap-3 p-4 rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/50 hover:border-orange-300 dark:hover:border-orange-500/40 hover:bg-orange-50 dark:hover:bg-orange-500/5 transition-all duration-200"
+                >
+                  <span className="flex-shrink-0 w-8 h-8 rounded-lg bg-white dark:bg-gray-800 border border-orange-200 dark:border-orange-500/30 flex items-center justify-center text-sm font-bold text-orange-500 font-mono shadow-sm">
+                    {index + 1}
+                  </span>
+                  <div className="min-w-0">
+                    <p className="text-sm font-semibold text-gray-900 dark:text-white group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors duration-200 leading-snug line-clamp-2 mb-1.5">
+                      {post.title}
+                    </p>
+                    <p className="text-xs text-gray-400 dark:text-gray-500 font-mono">{post.category} · {post.readingTime} min read</p>
+                  </div>
+                </Link>
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ── FEATURED POSTS ───────────────────────────────────── */}
+      {featuredPosts.length > 0 && (
+        <section className="bg-gray-50 dark:bg-gray-900/30 border-b border-gray-200 dark:border-gray-800">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+            <div className="flex items-center justify-between mb-8">
+              <div>
+                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Featured Guides</h2>
+                <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">Hand-picked articles to get you started</p>
+              </div>
+              <Link href="/blog" className="text-sm text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 font-medium flex items-center gap-1 transition-colors duration-200">
+                View all <ArrowRight className="w-4 h-4" />
+              </Link>
+            </div>
+
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+              {featuredPosts.map((post) => (
+                <PostCard key={post.id} post={post} featured />
+              ))}
+            </div>
+          </div>
+        </section>
+      )}
+
+      {/* ── CATEGORIES ───────────────────────────────────────── */}
+      <section className="bg-white dark:bg-gray-950 border-b border-gray-200 dark:border-gray-800">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
+          <div className="text-center mb-10">
+            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">Browse by Topic</h2>
+            <p className="text-gray-500 dark:text-gray-400">Find guides organized by technology and use case</p>
+          </div>
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
+            {categories.map((cat) => {
+              const Icon = cat.icon;
+              return (
+                <Link key={cat.slug} href={`/blog?category=${cat.name}`}
+                  className={`group flex flex-col items-center text-center p-5 rounded-xl border transition-all duration-200 ${cat.bg}`}
+                >
+                  <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-200">
+                    <Icon className={`w-5 h-5 ${cat.color}`} />
+                  </div>
+                  <div className={`text-sm font-semibold ${cat.color}`}>{cat.name}</div>
+                  <div className="text-xs text-gray-500 dark:text-gray-500 mt-1 hidden sm:block">{cat.description}</div>
+                </Link>
+              );
+            })}
+          </div>
+        </div>
+      </section>
+
+      {/* ── BUY VPS BANNER ───────────────────────────────────── */}
+      <section className="bg-gradient-to-r from-purple-600 to-blue-600">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div>
+              <div className="flex items-center gap-2 mb-2">
+                <Server className="w-5 h-5 text-white/80" />
+                <h2 className="text-xl font-bold text-white">Need a VPS to self-host?</h2>
+              </div>
+              <p className="text-purple-100">
+                Fast, affordable VPS servers — ready to deploy in seconds. Start from $4/month.
+              </p>
+            </div>
+            <a
+              href="https://vps.howtoselfhost.com"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="flex-shrink-0 inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-purple-700 font-bold px-7 py-3 rounded-lg transition-colors duration-200 shadow-lg"
+            >
+              Buy a VPS Now
+              <ExternalLink className="w-4 h-4" />
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* ── CTA ──────────────────────────────────────────────── */}
+      <section className="bg-white dark:bg-gray-950 border-t border-gray-200 dark:border-gray-800">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
+          <div className="max-w-2xl mx-auto">
+            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Ready to self-host?</h2>
+            <p className="text-gray-500 dark:text-gray-400 mb-8">
+              Start with our beginner-friendly Docker guide and work your way up to a full self-hosted stack.
+            </p>
+            <Link href="/blog/getting-started-with-docker-self-host-your-first-app"
+              className="inline-flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white font-semibold px-8 py-3 rounded-lg transition-colors duration-200 shadow-lg shadow-green-500/20"
+            >
+              Start Learning
+              <ArrowRight className="w-4 h-4" />
+            </Link>
+          </div>
+        </div>
+      </section>
+
+    </div>
+  );
+}

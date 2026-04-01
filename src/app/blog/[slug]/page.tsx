@@ -1,0 +1,245 @@
+import { notFound } from 'next/navigation';
+import Link from 'next/link';
+import Image from 'next/image';
+import { ArrowLeft, ArrowRight, Clock, Calendar, Tag } from 'lucide-react';
+import type { Metadata } from 'next';
+import prisma from '@/lib/prisma';
+import { serializeMDX, extractTableOfContents } from '@/lib/mdx';
+import { formatDate } from '@/lib/utils';
+import CategoryBadge from '@/components/ui/CategoryBadge';
+import TableOfContents from '@/components/blog/TableOfContents';
+import MDXContent from '@/components/blog/MDXContent';
+import type { Post } from '@/types';
+
+interface PageProps {
+  params: { slug: string };
+}
+
+async function getPost(slug: string): Promise<Post | null> {
+  try {
+    const post = await prisma.post.findUnique({
+      where: { slug, published: true },
+    });
+    return post as Post | null;
+  } catch {
+    return null;
+  }
+}
+
+async function getAdjacentPosts(currentSlug: string, publishedAt: Date | string | null) {
+  try {
+    const date = publishedAt ? new Date(publishedAt) : new Date();
+
+    const [prevPost, nextPost] = await Promise.all([
+      prisma.post.findFirst({
+        where: {
+          published: true,
+          publishedAt: { lt: date },
+          slug: { not: currentSlug },
+        },
+        orderBy: { publishedAt: 'desc' },
+        select: { slug: true, title: true, category: true },
+      }),
+      prisma.post.findFirst({
+        where: {
+          published: true,
+          publishedAt: { gt: date },
+          slug: { not: currentSlug },
+        },
+        orderBy: { publishedAt: 'asc' },
+        select: { slug: true, title: true, category: true },
+      }),
+    ]);
+
+    return { prevPost, nextPost };
+  } catch {
+    return { prevPost: null, nextPost: null };
+  }
+}
+
+export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
+  const post = await getPost(params.slug);
+  if (!post) return { title: 'Post Not Found' };
+
+  return {
+    title: post.title,
+    description: post.excerpt,
+    openGraph: {
+      title: post.title,
+      description: post.excerpt,
+      type: 'article',
+      publishedTime: post.publishedAt?.toString(),
+      ...(post.coverImage && {
+        images: [{ url: post.coverImage, width: 1200, height: 630, alt: post.title }],
+      }),
+    },
+  };
+}
+
+export async function generateStaticParams() {
+  try {
+    const posts = await prisma.post.findMany({
+      where: { published: true },
+      select: { slug: true },
+    });
+    return posts.map((p) => ({ slug: p.slug }));
+  } catch {
+    return [];
+  }
+}
+
+export default async function BlogPostPage({ params }: PageProps) {
+  const post = await getPost(params.slug);
+
+  if (!post) {
+    notFound();
+  }
+
+  const [mdxSource, { prevPost, nextPost }] = await Promise.all([
+    serializeMDX(post.content),
+    getAdjacentPosts(post.slug, post.publishedAt),
+  ]);
+
+  const tocItems = extractTableOfContents(post.content);
+
+  return (
+    <div className="min-h-screen">
+      {/* Cover Image Hero */}
+      {post.coverImage && (
+        <div className="relative w-full h-64 sm:h-80 lg:h-96 overflow-hidden bg-gray-900">
+          <Image
+            src={post.coverImage}
+            alt={post.title}
+            fill
+            priority
+            className="object-cover"
+            sizes="100vw"
+          />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-gray-950/20 to-gray-950" />
+        </div>
+      )}
+
+      {/* Post Header */}
+      <div className="border-b border-gray-800 bg-gray-950">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
+          {/* Breadcrumb */}
+          <div className="flex items-center gap-2 text-sm text-gray-500 mb-6">
+            <Link href="/" className="hover:text-gray-300 transition-colors duration-200">
+              Home
+            </Link>
+            <span>/</span>
+            <Link href="/blog" className="hover:text-gray-300 transition-colors duration-200">
+              Blog
+            </Link>
+            <span>/</span>
+            <span className="text-gray-400 truncate max-w-xs">{post.title}</span>
+          </div>
+
+          <CategoryBadge category={post.category} className="mb-4" />
+
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight mb-6 max-w-4xl">
+            {post.title}
+          </h1>
+
+          <p className="text-lg text-gray-400 max-w-3xl mb-6 leading-relaxed">
+            {post.excerpt}
+          </p>
+
+          {/* Meta */}
+          <div className="flex flex-wrap items-center gap-5 text-sm text-gray-500">
+            <span className="flex items-center gap-1.5">
+              <Calendar className="w-4 h-4" />
+              {formatDate(post.publishedAt ?? post.createdAt)}
+            </span>
+            <span className="flex items-center gap-1.5">
+              <Clock className="w-4 h-4" />
+              {post.readingTime} min read
+            </span>
+            {post.tags.length > 0 && (
+              <div className="flex items-center gap-2 flex-wrap">
+                <Tag className="w-4 h-4" />
+                {post.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="font-mono text-xs bg-gray-800 text-gray-400 px-2 py-0.5 rounded"
+                  >
+                    #{tag}
+                  </span>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </div>
+
+      {/* Content */}
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-10">
+        <div className="flex gap-10">
+          {/* Main content */}
+          <article className="flex-1 min-w-0">
+            <MDXContent source={mdxSource} />
+          </article>
+
+          {/* Sidebar TOC */}
+          {tocItems.length > 0 && (
+            <aside className="hidden xl:block w-64 flex-shrink-0">
+              <TableOfContents items={tocItems} />
+            </aside>
+          )}
+        </div>
+
+        {/* Prev/Next Navigation */}
+        {(prevPost || nextPost) && (
+          <div className="mt-16 pt-8 border-t border-gray-800 grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {prevPost ? (
+              <Link
+                href={`/blog/${prevPost.slug}`}
+                className="group flex flex-col p-5 rounded-xl border border-gray-800 bg-gray-900/50 hover:bg-gray-900 hover:border-gray-700 transition-all duration-200"
+              >
+                <span className="text-xs text-gray-500 flex items-center gap-1 mb-2">
+                  <ArrowLeft className="w-3 h-3" />
+                  Previous
+                </span>
+                <span className="text-sm font-semibold text-white group-hover:text-green-400 transition-colors duration-200 leading-snug">
+                  {prevPost.title}
+                </span>
+                <CategoryBadge category={prevPost.category} size="sm" className="mt-2 self-start" />
+              </Link>
+            ) : (
+              <div />
+            )}
+
+            {nextPost ? (
+              <Link
+                href={`/blog/${nextPost.slug}`}
+                className="group flex flex-col p-5 rounded-xl border border-gray-800 bg-gray-900/50 hover:bg-gray-900 hover:border-gray-700 transition-all duration-200 sm:text-right"
+              >
+                <span className="text-xs text-gray-500 flex items-center gap-1 mb-2 sm:justify-end">
+                  Next
+                  <ArrowRight className="w-3 h-3" />
+                </span>
+                <span className="text-sm font-semibold text-white group-hover:text-green-400 transition-colors duration-200 leading-snug">
+                  {nextPost.title}
+                </span>
+                <CategoryBadge category={nextPost.category} size="sm" className="mt-2 self-start sm:self-end" />
+              </Link>
+            ) : (
+              <div />
+            )}
+          </div>
+        )}
+
+        {/* Back to blog */}
+        <div className="mt-8 text-center">
+          <Link
+            href="/blog"
+            className="inline-flex items-center gap-2 text-gray-400 hover:text-white transition-colors duration-200 text-sm"
+          >
+            <ArrowLeft className="w-4 h-4" />
+            Back to all guides
+          </Link>
+        </div>
+      </div>
+    </div>
+  );
+}
