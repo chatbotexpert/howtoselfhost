@@ -41,10 +41,10 @@ export default function TableOfContents({ items }: TableOfContentsProps) {
 
   return (
     <nav className="sticky top-24 max-h-[calc(100vh-8rem)] overflow-y-auto">
-      <div className="rounded-xl border border-gray-800 bg-gray-900/50 p-4">
-        <div className="flex items-center gap-2 mb-3 pb-3 border-b border-gray-800">
-          <List className="w-4 h-4 text-green-400" />
-          <span className="text-sm font-semibold text-white">Table of Contents</span>
+      <div className="rounded-xl border border-slate-200 dark:border-gray-800 bg-white dark:bg-gray-900/50 p-4 shadow-sm dark:shadow-none">
+        <div className="flex items-center gap-2 mb-3 pb-3 border-b border-slate-100 dark:border-gray-800">
+          <List className="w-4 h-4 text-green-600 dark:text-green-400" />
+          <span className="text-sm font-semibold text-slate-900 dark:text-white">Table of Contents</span>
         </div>
         <ul className="space-y-1">
           {items.map((item) => (
@@ -65,9 +65,10 @@ export default function TableOfContents({ items }: TableOfContentsProps) {
                   'block text-sm py-1 transition-colors duration-150 rounded px-2 -mx-2',
                   item.level === 3 ? 'pl-5' : 'pl-2',
                   activeId === item.id
-                    ? 'text-green-400 bg-green-500/5'
-                    : 'text-gray-400 hover:text-gray-200'
-                )}
+                    ? 'text-green-600 dark:text-green-400 bg-green-500/5'
+                    : 'text-slate-500 hover:text-slate-900 dark:text-gray-400 dark:hover:text-gray-200'
+                )
+              }
               >
                 {item.text}
               </a>

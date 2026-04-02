@@ -6,9 +6,8 @@ generator client {
 }
 
 datasource db {
-  provider  = "postgresql"
+  provider  = "sqlite"
   url       = env("DATABASE_URL")
-  directUrl = env("DIRECT_URL")
 }
 
 model Post {
@@ -16,10 +15,10 @@ model Post {
   title       String
   slug        String    @unique
   excerpt     String
-  content     String    @db.Text
+  content     String
   coverImage  String?
   category    String
-  tags        String[]
+  tags        String    @default("[]")
   published   Boolean   @default(false)
   featured    Boolean   @default(false)
   readingTime Int       @default(5)

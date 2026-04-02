@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { ArrowRight, Server, Shield, Database, Globe, Activity, Box, Flame, ExternalLink, BookOpen, Tag, Users } from 'lucide-react';
+import { ArrowRight, Server, Shield, Database, Globe, Activity, Box, Flame, ExternalLink, BookOpen, Tag, Users, Cpu, PlayCircle, FolderDown, Network, Zap, GitBranch, MessageSquare } from 'lucide-react';
 import PostCard from '@/components/blog/PostCard';
 import LiveCounter from '@/components/ui/LiveCounter';
 import prisma from '@/lib/prisma';
@@ -11,8 +11,11 @@ async function getFeaturedPosts(): Promise<Post[]> {
       where: { published: true, featured: true },
       orderBy: { publishedAt: 'desc' },
       take: 3,
-    });
-    return posts as Post[];
+    }) as any[];
+    return posts.map(p => ({ 
+      ...p, 
+      tags: p.tags ? (JSON.parse(p.tags) as string[]) : [] 
+    })) as Post[];
   } catch {
     return [];
   }
@@ -24,8 +27,11 @@ async function getHotPosts(): Promise<Post[]> {
       where: { published: true },
       orderBy: { publishedAt: 'desc' },
       take: 4,
-    });
-    return posts as Post[];
+    }) as any[];
+    return posts.map(p => ({ 
+      ...p, 
+      tags: p.tags ? (JSON.parse(p.tags) as string[]) : [] 
+    })) as Post[];
   } catch {
     return [];
   }
@@ -45,12 +51,19 @@ async function getStats() {
 }
 
 const categories = [
-  { name: 'Docker',     slug: 'docker',     icon: Box,      color: 'text-blue-500',   bg: 'bg-blue-50   dark:bg-blue-500/10   border-blue-200   dark:border-blue-500/20   hover:bg-blue-100   dark:hover:bg-blue-500/20',   description: 'Containerize and deploy apps' },
-  { name: 'VPS',        slug: 'vps',        icon: Server,   color: 'text-purple-500', bg: 'bg-purple-50 dark:bg-purple-500/10 border-purple-200 dark:border-purple-500/20 hover:bg-purple-100 dark:hover:bg-purple-500/20', description: 'Server setup and management' },
-  { name: 'Nginx',      slug: 'nginx',      icon: Globe,    color: 'text-green-500',  bg: 'bg-green-50  dark:bg-green-500/10  border-green-200  dark:border-green-500/20  hover:bg-green-100  dark:hover:bg-green-500/20',  description: 'Reverse proxy and web server' },
-  { name: 'Databases',  slug: 'databases',  icon: Database, color: 'text-orange-500', bg: 'bg-orange-50 dark:bg-orange-500/10 border-orange-200 dark:border-orange-500/20 hover:bg-orange-100 dark:hover:bg-orange-500/20', description: 'PostgreSQL, MySQL, Redis' },
-  { name: 'Security',   slug: 'security',   icon: Shield,   color: 'text-red-500',    bg: 'bg-red-50    dark:bg-red-500/10    border-red-200    dark:border-red-500/20    hover:bg-red-100    dark:hover:bg-red-500/20',    description: 'SSL, firewalls, hardening' },
-  { name: 'Monitoring', slug: 'monitoring', icon: Activity, color: 'text-yellow-500', bg: 'bg-yellow-50 dark:bg-yellow-500/10 border-yellow-200 dark:border-yellow-500/20 hover:bg-yellow-100 dark:hover:bg-yellow-500/20', description: 'Uptime, metrics, alerts' },
+  { name: 'Docker',       slug: 'docker',       icon: Box,           color: 'text-blue-500',   bg: 'bg-blue-50   dark:bg-blue-500/10   border-blue-200   dark:border-blue-500/20   hover:bg-blue-100   dark:hover:bg-blue-500/20',   description: 'Containerize and deploy apps' },
+  { name: 'VPS',          slug: 'vps',          icon: Server,        color: 'text-purple-500', bg: 'bg-purple-50 dark:bg-purple-500/10 border-purple-200 dark:border-purple-500/20 hover:bg-purple-100 dark:hover:bg-purple-500/20', description: 'Server setup and management' },
+  { name: 'Nginx',        slug: 'nginx',        icon: Globe,         color: 'text-green-500',  bg: 'bg-green-50  dark:bg-green-500/10  border-green-200  dark:border-green-500/20  hover:bg-green-100  dark:hover:bg-green-500/20',  description: 'Reverse proxy and web server' },
+  { name: 'Databases',    slug: 'databases',    icon: Database,      color: 'text-orange-500', bg: 'bg-orange-50 dark:bg-orange-500/10 border-orange-200 dark:border-orange-500/20 hover:bg-orange-100 dark:hover:bg-orange-500/20', description: 'PostgreSQL, MySQL, Redis' },
+  { name: 'Security',     slug: 'security',     icon: Shield,        color: 'text-red-500',    bg: 'bg-red-50    dark:bg-red-500/10    border-red-200    dark:border-red-500/20    hover:bg-red-100    dark:hover:bg-red-500/20',    description: 'SSL, firewalls, hardening' },
+  { name: 'Monitoring',   slug: 'monitoring',   icon: Activity,      color: 'text-yellow-500', bg: 'bg-yellow-50 dark:bg-yellow-500/10 border-yellow-200 dark:border-yellow-500/20 hover:bg-yellow-100 dark:hover:bg-yellow-500/20', description: 'Uptime, metrics, alerts' },
+  { name: 'Blockchain',   slug: 'blockchain',   icon: Cpu,           color: 'text-indigo-500', bg: 'bg-indigo-50 dark:bg-indigo-500/10 border-indigo-200 dark:border-indigo-500/20 hover:bg-indigo-100 dark:hover:bg-indigo-500/20', description: 'Nodes, staking, wallets' },
+  { name: 'Media',        slug: 'media',        icon: PlayCircle,    color: 'text-pink-500',   bg: 'bg-pink-50 dark:bg-pink-500/10 border-pink-200 dark:border-pink-500/20 hover:bg-pink-100 dark:hover:bg-pink-500/20', description: 'Plex, Jellyfin, audio' },
+  { name: 'Files',        slug: 'files',        icon: FolderDown,    color: 'text-teal-500',   bg: 'bg-teal-50 dark:bg-teal-500/10 border-teal-200 dark:border-teal-500/20 hover:bg-teal-100 dark:hover:bg-teal-500/20', description: 'Nextcloud, Syncthing, NAS' },
+  { name: 'VPN',          slug: 'vpn',          icon: Network,       color: 'text-cyan-500',   bg: 'bg-cyan-50 dark:bg-cyan-500/10 border-cyan-200 dark:border-cyan-500/20 hover:bg-cyan-100 dark:hover:bg-cyan-500/20', description: 'WireGuard, OpenVPN, mesh' },
+  { name: 'Automation',   slug: 'automation',   icon: Zap,           color: 'text-amber-500',  bg: 'bg-amber-50 dark:bg-amber-500/10 border-amber-200 dark:border-amber-500/20 hover:bg-amber-100 dark:hover:bg-amber-500/20', description: 'Home Assistant, n8n' },
+  { name: 'CI/CD',        slug: 'cicd',         icon: GitBranch,     color: 'text-rose-500',   bg: 'bg-rose-50 dark:bg-rose-500/10 border-rose-200 dark:border-rose-500/20 hover:bg-rose-100 dark:hover:bg-rose-500/20', description: 'GitHub Actions, Jenkins' },
+  { name: 'Communication',slug: 'communication',icon: MessageSquare, color: 'text-fuchsia-500',bg: 'bg-fuchsia-50 dark:bg-fuchsia-500/10 border-fuchsia-200 dark:border-fuchsia-500/20 hover:bg-fuchsia-100 dark:hover:bg-fuchsia-500/20', description: 'Matrix, Mattermost, IRC' },
 ];
 
 export default async function HomePage() {
@@ -215,21 +228,40 @@ export default async function HomePage() {
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">Browse by Topic</h2>
             <p className="text-gray-500 dark:text-gray-400">Find guides organized by technology and use case</p>
           </div>
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-6 gap-4">
-            {categories.map((cat) => {
-              const Icon = cat.icon;
-              return (
-                <Link key={cat.slug} href={`/blog?category=${cat.name}`}
-                  className={`group flex flex-col items-center text-center p-5 rounded-xl border transition-all duration-200 ${cat.bg}`}
-                >
-                  <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-200">
-                    <Icon className={`w-5 h-5 ${cat.color}`} />
-                  </div>
-                  <div className={`text-sm font-semibold ${cat.color}`}>{cat.name}</div>
-                  <div className="text-xs text-gray-500 dark:text-gray-500 mt-1 hidden sm:block">{cat.description}</div>
-                </Link>
-              );
-            })}
+          <style dangerouslySetInnerHTML={{ __html: `
+            @keyframes scroll {
+              0% { transform: translateX(0); }
+              100% { transform: translateX(calc(-50% - 0.5rem)); }
+            }
+            .animate-scroll {
+              animation: scroll 40s linear infinite;
+              display: flex;
+            }
+            .animate-scroll:hover {
+              animation-play-state: paused;
+            }
+          ` }} />
+          <div className="overflow-hidden w-full relative">
+            {/* Gradient masks for smooth fading at the edges */}
+            <div className="absolute left-0 top-0 bottom-0 w-8 z-10 bg-gradient-to-r from-white dark:from-gray-950 to-transparent pointer-events-none" />
+            <div className="absolute right-0 top-0 bottom-0 w-8 z-10 bg-gradient-to-l from-white dark:from-gray-950 to-transparent pointer-events-none" />
+
+            <div className="animate-scroll w-max gap-4 py-2 px-1">
+              {[...categories, ...categories].map((cat, index) => {
+                const Icon = cat.icon;
+                return (
+                  <Link key={`${cat.slug}-${index}`} href={`/blog?category=${cat.name}`}
+                    className={`flex-shrink-0 w-48 group flex flex-col items-center text-center p-5 rounded-xl border transition-all duration-200 ${cat.bg}`}
+                  >
+                    <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-200">
+                      <Icon className={`w-5 h-5 ${cat.color}`} />
+                    </div>
+                    <div className={`text-sm font-semibold ${cat.color}`}>{cat.name}</div>
+                    <div className="text-xs text-gray-500 dark:text-gray-500 mt-1">{cat.description}</div>
+                  </Link>
+                );
+              })}
+            </div>
           </div>
         </div>
       </section>

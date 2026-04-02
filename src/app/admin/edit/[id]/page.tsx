@@ -23,7 +23,8 @@ interface PageProps {
 async function getPost(id: string): Promise<Post | null> {
   try {
     const post = await prisma.post.findUnique({ where: { id } });
-    return post as Post | null;
+    if (!post) return null;
+    return { ...post, tags: post.tags ? JSON.parse(post.tags) : [] } as Post;
   } catch {
     return null;
   }

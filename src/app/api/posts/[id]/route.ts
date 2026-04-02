@@ -17,7 +17,12 @@ export async function GET(request: NextRequest, { params }: RouteParams) {
       return NextResponse.json({ error: 'Post not found' }, { status: 404 });
     }
 
-    return NextResponse.json(post);
+    const parsedPost = {
+      ...post,
+      tags: post.tags ? JSON.parse(post.tags) : []
+    };
+
+    return NextResponse.json(parsedPost);
   } catch (error) {
     console.error('GET /api/posts/[id] error:', error);
     return NextResponse.json({ error: 'Failed to fetch post' }, { status: 500 });
@@ -61,7 +66,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
         ...(content !== undefined && { content, readingTime }),
         ...(coverImage !== undefined && { coverImage }),
         ...(category !== undefined && { category }),
-        ...(tags !== undefined && { tags }),
+        ...(tags !== undefined && { tags: JSON.stringify(tags) }),
         ...(published !== undefined && { published }),
         ...(featured !== undefined && { featured }),
         ...(publishedAt !== undefined && {
@@ -70,7 +75,7 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
       },
     });
 
-    return NextResponse.json(post);
+    return NextResponse.json({ ...post, tags: tags || JSON.parse(post.tags) });
   } catch (error: unknown) {
     console.error('PUT /api/posts/[id] error:', error);
     if (

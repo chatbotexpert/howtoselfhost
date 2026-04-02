@@ -8,7 +8,7 @@ import CategoryBadge from '@/components/ui/CategoryBadge';
 import { cn } from '@/lib/utils';
 import type { Post } from '@/types';
 
-const ALL_CATEGORIES = ['All', 'Docker', 'VPS', 'Nginx', 'Databases', 'Security', 'Monitoring'];
+const ALL_CATEGORIES = ['All', 'Docker', 'VPS', 'Nginx', 'Databases', 'Security', 'Monitoring', 'Blockchain', 'Media', 'Files', 'VPN', 'Automation', 'CI/CD', 'Communication'];
 
 interface BlogClientPageProps {
   initialPosts: Post[];

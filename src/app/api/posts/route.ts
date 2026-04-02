@@ -26,7 +26,12 @@ export async function GET(request: NextRequest) {
       orderBy: { publishedAt: 'desc' },
     });
 
-    return NextResponse.json(posts);
+    const parsedPosts = posts.map(p => ({
+      ...p,
+      tags: p.tags ? JSON.parse(p.tags) : []
+    }));
+
+    return NextResponse.json(parsedPosts);
   } catch (error) {
     console.error('GET /api/posts error:', error);
     return NextResponse.json(
@@ -73,7 +78,7 @@ export async function POST(request: NextRequest) {
         content,
         coverImage: coverImage ?? null,
         category: category ?? 'Docker',
-        tags,
+        tags: JSON.stringify(tags),
         published,
         featured,
         readingTime,
@@ -81,7 +86,7 @@ export async function POST(request: NextRequest) {
       },
     });
 
-    return NextResponse.json(post, { status: 201 });
+    return NextResponse.json({ ...post, tags });
   } catch (error: unknown) {
     console.error('POST /api/posts error:', error);
     if (

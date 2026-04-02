@@ -20,7 +20,9 @@ async function getPost(slug: string): Promise<Post | null> {
     const post = await prisma.post.findUnique({
       where: { slug, published: true },
     });
-    return post as Post | null;
+    if (!post) return null;
+    const { tags, ...p } = post;
+    return { ...p, tags: tags ? (JSON.parse(tags) as string[]) : [] } as Post;
   } catch {
     return null;
   }
@@ -106,21 +108,21 @@ export default async function BlogPostPage({ params }: PageProps) {
     <div className="min-h-screen">
       {/* Cover Image Hero */}
       {post.coverImage && (
-        <div className="relative w-full h-64 sm:h-80 lg:h-96 overflow-hidden bg-gray-900">
+        <div className="relative w-full h-64 sm:h-80 lg:h-96 overflow-hidden bg-slate-100 dark:bg-gray-900 shadow-inner">
           <Image
             src={post.coverImage}
             alt={post.title}
             fill
             priority
-            className="object-cover"
+            className="object-contain drop-shadow-lg"
             sizes="100vw"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-gray-950/20 to-gray-950" />
+          <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/5 to-black/20 dark:via-gray-950/20 dark:to-gray-950" />
         </div>
       )}
 
       {/* Post Header */}
-      <div className="border-b border-gray-800 bg-gray-950">
+      <div className="border-b border-slate-200 dark:border-gray-800 bg-white dark:bg-gray-950 shadow-sm">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           {/* Breadcrumb */}
           <div className="flex items-center gap-2 text-sm text-gray-500 mb-6">
@@ -137,22 +139,22 @@ export default async function BlogPostPage({ params }: PageProps) {
 
           <CategoryBadge category={post.category} className="mb-4" />
 
-          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white leading-tight mb-6 max-w-4xl">
+          <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white leading-tight mb-6 max-w-4xl">
             {post.title}
           </h1>
 
-          <p className="text-lg text-gray-400 max-w-3xl mb-6 leading-relaxed">
+          <p className="text-lg text-slate-500 dark:text-gray-400 max-w-3xl mb-6 leading-relaxed">
             {post.excerpt}
           </p>
 
           {/* Meta */}
-          <div className="flex flex-wrap items-center gap-5 text-sm text-gray-500">
+          <div className="flex flex-wrap items-center gap-5 text-sm text-slate-500 dark:text-gray-500">
             <span className="flex items-center gap-1.5">
-              <Calendar className="w-4 h-4" />
+              <Calendar className="w-4 h-4 text-green-600 dark:text-green-400" />
               {formatDate(post.publishedAt ?? post.createdAt)}
             </span>
             <span className="flex items-center gap-1.5">
-              <Clock className="w-4 h-4" />
+              <Clock className="w-4 h-4 text-green-600 dark:text-green-400" />
               {post.readingTime} min read
             </span>
             {post.tags.length > 0 && (
@@ -161,7 +163,7 @@ export default async function BlogPostPage({ params }: PageProps) {
                 {post.tags.map((tag) => (
                   <span
                     key={tag}
-                    className="font-mono text-xs bg-gray-800 text-gray-400 px-2 py-0.5 rounded"
+                    className="font-mono text-xs bg-slate-100 dark:bg-gray-800 text-slate-500 dark:text-gray-400 px-2 py-0.5 rounded border border-slate-200 dark:border-gray-700/50 shadow-sm"
                   >
                     #{tag}
                   </span>
@@ -190,17 +192,17 @@ export default async function BlogPostPage({ params }: PageProps) {
 
         {/* Prev/Next Navigation */}
         {(prevPost || nextPost) && (
-          <div className="mt-16 pt-8 border-t border-gray-800 grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="mt-16 pt-8 border-t border-slate-200 dark:border-gray-800 grid grid-cols-1 sm:grid-cols-2 gap-4">
             {prevPost ? (
               <Link
                 href={`/blog/${prevPost.slug}`}
-                className="group flex flex-col p-5 rounded-xl border border-gray-800 bg-gray-900/50 hover:bg-gray-900 hover:border-gray-700 transition-all duration-200"
+                className="group flex flex-col p-5 rounded-xl border border-slate-200 dark:border-gray-800 bg-white dark:bg-gray-900/50 hover:bg-slate-50 dark:hover:bg-gray-900 hover:border-green-300 dark:hover:border-gray-700 transition-all duration-200 shadow-sm hover:shadow-md"
               >
-                <span className="text-xs text-gray-500 flex items-center gap-1 mb-2">
+                <span className="text-xs text-slate-400 dark:text-gray-500 flex items-center gap-1 mb-2">
                   <ArrowLeft className="w-3 h-3" />
                   Previous
                 </span>
-                <span className="text-sm font-semibold text-white group-hover:text-green-400 transition-colors duration-200 leading-snug">
+                <span className="text-sm font-semibold text-slate-900 dark:text-white group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors duration-200 leading-snug">
                   {prevPost.title}
                 </span>
                 <CategoryBadge category={prevPost.category} size="sm" className="mt-2 self-start" />
@@ -212,13 +214,13 @@ export default async function BlogPostPage({ params }: PageProps) {
             {nextPost ? (
               <Link
                 href={`/blog/${nextPost.slug}`}
-                className="group flex flex-col p-5 rounded-xl border border-gray-800 bg-gray-900/50 hover:bg-gray-900 hover:border-gray-700 transition-all duration-200 sm:text-right"
+                className="group flex flex-col p-5 rounded-xl border border-slate-200 dark:border-gray-800 bg-white dark:bg-gray-900/50 hover:bg-slate-50 dark:hover:bg-gray-900 hover:border-green-300 dark:hover:border-gray-700 transition-all duration-200 sm:text-right shadow-sm hover:shadow-md"
               >
-                <span className="text-xs text-gray-500 flex items-center gap-1 mb-2 sm:justify-end">
+                <span className="text-xs text-slate-400 dark:text-gray-500 flex items-center gap-1 mb-2 sm:justify-end">
                   Next
                   <ArrowRight className="w-3 h-3" />
                 </span>
-                <span className="text-sm font-semibold text-white group-hover:text-green-400 transition-colors duration-200 leading-snug">
+                <span className="text-sm font-semibold text-slate-900 dark:text-white group-hover:text-green-600 dark:group-hover:text-green-400 transition-colors duration-200 leading-snug">
                   {nextPost.title}
                 </span>
                 <CategoryBadge category={nextPost.category} size="sm" className="mt-2 self-start sm:self-end" />

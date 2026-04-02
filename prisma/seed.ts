@@ -9,6 +9,13 @@ const categories = [
   { name: 'Databases', slug: 'databases', color: '#f97316', icon: '🗄️' },
   { name: 'Security', slug: 'security', color: '#ef4444', icon: '🔒' },
   { name: 'Monitoring', slug: 'monitoring', color: '#eab308', icon: '📊' },
+  { name: 'Blockchain', slug: 'blockchain', color: '#6366f1', icon: '🔗' },
+  { name: 'Media', slug: 'media', color: '#ec4899', icon: '🍿' },
+  { name: 'Files', slug: 'files', color: '#14b8a6', icon: '📁' },
+  { name: 'VPN', slug: 'vpn', color: '#06b6d4', icon: '🌐' },
+  { name: 'Automation', slug: 'automation', color: '#f59e0b', icon: '⚡' },
+  { name: 'CI/CD', slug: 'cicd', color: '#f43f5e', icon: '🔄' },
+  { name: 'Communication', slug: 'communication', color: '#d946ef', icon: '💬' },
 ];
 
 const posts = [
@@ -1767,12 +1774,32 @@ async function main() {
     console.log(`Created category: ${category.name}`);
   }
 
+  // Dynamically generate posts for categories without any
+  const existingPostCategories = new Set(posts.map(p => p.category));
+  for (const category of categories) {
+    if (!existingPostCategories.has(category.name)) {
+      posts.push({
+        title: `Getting Started with ${category.name}: A Quick Guide`,
+        slug: `getting-started-with-${category.slug}`,
+        excerpt: `A comprehensive starter guide to understanding, deploying, and self-hosting ${category.name} in your infrastructure.`,
+        category: category.name,
+        tags: [category.slug, 'guide', 'self-hosting', 'starter'],
+        published: true,
+        featured: false,
+        readingTime: 5,
+        publishedAt: new Date(),
+        content: `## Exploring ${category.name}\n\nWelcome to our complete guide on **${category.name}**. In this tutorial, we will explore the core concepts, implementation details, and the best ways to self-host it effectively.\n\n### Why ${category.name}?\n\nSelf-hosting ${category.name} allows you to maintain full ownership of your data without relying on third-party cloud architectures. By following the architecture outlined here, you reduce long-term costs while deeply understanding the underlying mechanics.\n\n### Next Steps\n\n1. Ensure your server meets the minimum specs.\n2. Spin up a Docker Compose stack configured correctly for it.\n3. Implement a reverse proxy (like Nginx) and SSL certificates to safely expose it online.\n\n> The most crucial step of self-hosting is taking that first leap! Good luck building your ${category.name} stack.`,
+      });
+    }
+  }
+
   // Seed posts
   for (const post of posts) {
+    const postData = { ...post, tags: JSON.stringify(post.tags) };
     await prisma.post.upsert({
-      where: { slug: post.slug },
+      where: { slug: postData.slug },
       update: {},
-      create: post,
+      create: postData,
     });
     console.log(`Created post: ${post.title}`);
   }

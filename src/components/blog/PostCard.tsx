@@ -12,7 +12,7 @@ interface PostCardProps {
 
 export default function PostCard({ post, featured = false }: PostCardProps) {
   return (
-    <article className="group relative flex flex-col rounded-2xl border border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-900 hover:border-green-300 dark:hover:border-green-500/40 transition-all duration-300 overflow-hidden shadow-sm hover:shadow-xl dark:shadow-none">
+    <article className="group relative flex flex-col rounded-2xl border border-slate-200/80 dark:border-gray-800 bg-white dark:bg-gray-900 hover:border-green-300 dark:hover:border-green-500/40 transition-all duration-300 overflow-hidden shadow-sm hover:shadow-xl dark:shadow-none">
       {/* Cover image — tall and prominent */}
       <Link href={`/blog/${post.slug}`} className="block relative w-full overflow-hidden bg-gray-100 dark:bg-gray-800 flex-shrink-0" style={{ height: featured ? '220px' : '200px' }}>
         {post.coverImage ? (
@@ -20,7 +20,7 @@ export default function PostCard({ post, featured = false }: PostCardProps) {
             src={post.coverImage}
             alt={post.title}
             fill
-            className="object-cover group-hover:scale-105 transition-transform duration-500"
+            className="object-contain group-hover:scale-105 transition-transform duration-500"
             sizes="(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw"
           />
         ) : (

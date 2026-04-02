@@ -8,7 +8,7 @@ import { ArrowLeft, Eye, EyeOff, Save, Send, Loader2, Upload, X, ImageIcon } fro
 import { slugify } from '@/lib/utils';
 import type { Post } from '@/types';
 
-const CATEGORIES = ['Docker', 'VPS', 'Nginx', 'Databases', 'Security', 'Monitoring'];
+const CATEGORIES = ['Docker', 'VPS', 'Nginx', 'Databases', 'Security', 'Monitoring', 'Blockchain', 'Media', 'Files', 'VPN', 'Automation', 'CI/CD', 'Communication'];
 
 interface PostEditorProps {
   mode: 'new' | 'edit';
@@ -330,7 +330,7 @@ export default function PostEditor({ mode, post }: PostEditorProps) {
                       src={coverImage}
                       alt="Cover"
                       fill
-                      className="object-cover"
+                      className="object-contain"
                     />
                   </div>
                   <div className="flex gap-2 mt-2">

@@ -9,7 +9,7 @@ async function getPosts(): Promise<Post[]> {
       where: { published: true },
       orderBy: { publishedAt: 'desc' },
     });
-    return posts as Post[];
+    return posts.map(p => ({ ...p, tags: p.tags ? JSON.parse(p.tags) : [] })) as Post[];
   } catch {
     return [];
   }
