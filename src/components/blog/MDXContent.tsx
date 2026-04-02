@@ -128,7 +128,7 @@ const components = {
     </td>
   ),
   hr: (props: React.HTMLAttributes<HTMLHRElement>) => (
-    <hr className="border-gray-800 my-8" {...props} />
+    <hr className="border-slate-200 dark:border-gray-800 my-8" {...props} />
   ),
   strong: ({ children, ...props }: React.HTMLAttributes<HTMLElement>) => (
     <strong className="font-semibold text-slate-900 dark:text-white" {...props}>

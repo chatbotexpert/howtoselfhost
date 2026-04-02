@@ -39,19 +39,19 @@
 
 @layer components {
   .prose-custom {
-    @apply prose dark:prose-invert max-w-none;
+    @apply prose prose-slate dark:prose-invert max-w-none;
   }
 
   .mdx-content h1 {
-    @apply text-3xl font-bold text-gray-900 dark:text-white mt-8 mb-4 scroll-mt-24;
+    @apply text-3xl font-bold text-slate-900 dark:text-white mt-8 mb-4 scroll-mt-24;
   }
 
   .mdx-content h2 {
-    @apply text-2xl font-bold text-gray-900 dark:text-white mt-10 mb-4 scroll-mt-24;
+    @apply text-2xl font-bold text-slate-900 dark:text-white mt-10 mb-4 scroll-mt-24;
   }
 
   .mdx-content h3 {
-    @apply text-xl font-semibold text-gray-900 dark:text-white mt-8 mb-3 scroll-mt-24;
+    @apply text-xl font-semibold text-slate-900 dark:text-white mt-8 mb-3 scroll-mt-24;
   }
 
   .mdx-content .hljs {
