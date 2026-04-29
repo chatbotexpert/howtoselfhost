@@ -25,10 +25,10 @@ export default function AboutPage() {
             <Terminal className="w-3 h-3" />
             about this site
           </div>
-          <h1 className="text-4xl font-bold text-white mb-4">
+          <h1 className="text-4xl font-bold text-gray-900 dark:text-white mb-4">
             About howtoselfhost.com
           </h1>
-          <p className="text-xl text-gray-400 leading-relaxed">
+          <p className="text-xl text-gray-600 dark:text-gray-400 leading-relaxed">
             A practical resource for self-hosters who want to own their
             infrastructure without the complexity.
           </p>
@@ -36,20 +36,20 @@ export default function AboutPage() {
 
         {/* Mission */}
         <section className="mb-12">
-          <h2 className="text-2xl font-bold text-white mb-4">Our Mission</h2>
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Our Mission</h2>
           <div className="prose prose-invert">
-            <p className="text-gray-300 leading-relaxed mb-4">
+            <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
               Self-hosting has become more accessible than ever, but the
               documentation is scattered across forums, GitHub READMEs, and
               decade-old blog posts. howtoselfhost.com exists to fix that.
             </p>
-            <p className="text-gray-300 leading-relaxed mb-4">
+            <p className="text-gray-700 dark:text-gray-300 leading-relaxed mb-4">
               Every guide here is written to be production-ready from day one.
               We don&apos;t just show you how to make something work in
               development — we show you how to do it right, with proper security,
               backups, and monitoring.
             </p>
-            <p className="text-gray-300 leading-relaxed">
+            <p className="text-gray-700 dark:text-gray-300 leading-relaxed">
               Whether you&apos;re running a personal blog, a small business, or
               an entire homelab, you&apos;ll find practical, copy-paste-ready
               guides here.
@@ -59,7 +59,7 @@ export default function AboutPage() {
 
         {/* What we cover */}
         <section className="mb-12">
-          <h2 className="text-2xl font-bold text-white mb-6">
+          <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-6">
             Technologies We Cover
           </h2>
           <div className="space-y-3">
@@ -68,10 +68,10 @@ export default function AboutPage() {
               return (
                 <div
                   key={item.label}
-                  className="flex items-center gap-3 p-3 rounded-lg bg-gray-900/50 border border-gray-800"
+                  className="flex items-center gap-3 p-3 rounded-lg bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 shadow-sm dark:shadow-none"
                 >
                   <Icon className={`w-5 h-5 ${item.color} flex-shrink-0`} />
-                  <span className="text-gray-200 text-sm">{item.label}</span>
+                  <span className="text-gray-800 dark:text-gray-200 text-sm">{item.label}</span>
                 </div>
               );
             })}
@@ -80,10 +80,10 @@ export default function AboutPage() {
 
         {/* Philosophy */}
         <section className="mb-12 p-6 rounded-xl bg-green-500/5 border border-green-500/20">
-          <h2 className="text-xl font-bold text-white mb-3">
+          <h2 className="text-xl font-bold text-gray-900 dark:text-white mb-3">
             Our Philosophy
           </h2>
-          <ul className="space-y-2 text-gray-300 text-sm">
+          <ul className="space-y-2 text-gray-700 dark:text-gray-300 text-sm">
             <li className="flex items-start gap-2">
               <span className="text-green-400 mt-0.5">→</span>
               <span>Every tutorial should work on a fresh server install</span>

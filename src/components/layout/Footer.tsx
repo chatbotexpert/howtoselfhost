@@ -15,7 +15,12 @@ const footerLinks = {
   ],
   Site: [
     { href: '/about', label: 'About' },
+    { href: '/contact', label: 'Contact' },
     { href: '/admin', label: 'Admin' },
+  ],
+  Legal: [
+    { href: '/privacy', label: 'Privacy Policy' },
+    { href: '/terms', label: 'Terms of Service' },
   ],
 };
 
