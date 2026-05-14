@@ -11,6 +11,8 @@ import TableOfContents from '@/components/blog/TableOfContents';
 import MDXContent from '@/components/blog/MDXContent';
 import type { Post } from '@/types';
 
+export const dynamic = 'force-dynamic';
+
 interface PageProps {
   params: Promise<{
     slug: string;
