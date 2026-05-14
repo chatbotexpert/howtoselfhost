@@ -6,8 +6,6 @@ export async function POST(request: NextRequest) {
   try {
     const { email, password } = await request.json();
 
-    console.log(email, password)
-
     if (!email || !password) {
       return NextResponse.json({ error: 'Email and password are required' }, { status: 400 });
     }
@@ -16,19 +14,11 @@ export async function POST(request: NextRequest) {
     const adminHash = process.env.ADMIN_PASSWORD_HASH;
 
     if (!adminEmail || !adminHash) {
-      console.error('ADMIN_EMAIL or ADMIN_PASSWORD_HASH not set in env');
       return NextResponse.json({ error: 'Server misconfiguration' }, { status: 500 });
     }
 
-    console.log(adminEmail)
-    console.log(adminHash)
-
-
     const emailMatch = email.toLowerCase() === adminEmail.toLowerCase();
     const passwordMatch = bcrypt.compareSync(password, adminHash);
-
-    console.log(emailMatch, passwordMatch)
-
 
     if (!emailMatch || !passwordMatch) {
       return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 });
