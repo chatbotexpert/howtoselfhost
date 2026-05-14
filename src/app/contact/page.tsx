@@ -14,7 +14,7 @@ export default function ContactPage() {
           Contact Us
         </h1>
         <p className="text-xl text-gray-600 dark:text-gray-400 mb-12">
-          Have a question, suggestion, or just want to say hi? We'd love to hear from you.
+          Have a question, suggestion, or just want to say hi? We&apos;d love to hear from you.
         </p>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">

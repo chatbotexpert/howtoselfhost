@@ -30,12 +30,12 @@ export default function TermsPage() {
             <li>use the materials for any commercial purpose, or for any public display (commercial or non-commercial);</li>
             <li>attempt to decompile or reverse engineer any software contained on howtoselfhost.com;</li>
             <li>remove any copyright or other proprietary notations from the materials; or</li>
-            <li>transfer the materials to another person or "mirror" the materials on any other server.</li>
+            <li>transfer the materials to another person or &quot;mirror&quot; the materials on any other server.</li>
           </ul>
 
           <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mt-8 mb-4">3. Disclaimer</h2>
           <p className="text-gray-700 dark:text-gray-300 mb-4">
-            The materials on howtoselfhost.com are provided on an 'as is' basis. howtoselfhost.com makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties including, without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights.
+            The materials on howtoselfhost.com are provided on an &apos;as is&apos; basis. howtoselfhost.com makes no warranties, expressed or implied, and hereby disclaims and negates all other warranties including, without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights.
           </p>
 
           <h2 className="text-2xl font-semibold text-gray-900 dark:text-white mt-8 mb-4">4. Limitations</h2>

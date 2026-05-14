@@ -4,16 +4,19 @@ import type { Metadata } from 'next';
 import prisma from '@/lib/prisma';
 import PostEditor from '../../PostEditor';
 import type { Post } from '@/types';
+import { verifyToken } from '@/lib/auth';
 
 export const metadata: Metadata = {
   title: 'Edit Post — Admin',
   robots: { index: false, follow: false },
 };
 
-function isAuthenticated(): boolean {
+async function isAuthenticated(): Promise<boolean> {
   const cookieStore = cookies();
-  const adminCookie = cookieStore.get('admin_token');
-  return adminCookie?.value === process.env.ADMIN_SECRET;
+  const token = cookieStore.get('admin_session')?.value;
+  if (!token) return false;
+  const payload = await verifyToken(token);
+  return payload?.email === process.env.ADMIN_EMAIL;
 }
 
 interface PageProps {
@@ -31,7 +34,7 @@ async function getPost(id: string): Promise<Post | null> {
 }
 
 export default async function EditPostPage({ params }: PageProps) {
-  if (!isAuthenticated()) {
+  if (!(await isAuthenticated())) {
     redirect('/admin');
   }
 

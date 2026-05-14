@@ -14,6 +14,16 @@ interface BlogClientPageProps {
   initialPosts: Post[];
 }
 
+// Debounce hook
+function useDebounce<T>(value: T, delay: number): T {
+  const [debouncedValue, setDebouncedValue] = useState<T>(value);
+  useEffect(() => {
+    const handler = setTimeout(() => setDebouncedValue(value), delay);
+    return () => clearTimeout(handler);
+  }, [value, delay]);
+  return debouncedValue;
+}
+
 export default function BlogClientPage({ initialPosts }: BlogClientPageProps) {
   const searchParams = useSearchParams();
   const router = useRouter();
@@ -28,25 +38,45 @@ export default function BlogClientPage({ initialPosts }: BlogClientPageProps) {
     if (cat) setActiveCategory(cat);
   }, [searchParams]);
 
-  const filteredPosts = useMemo(() => {
-    let posts = initialPosts;
+  const [isSearching, setIsSearching] = useState(false);
+  const [searchResults, setSearchResults] = useState<Post[] | null>(null);
 
+  const debouncedSearchQuery = useDebounce(searchQuery, 300);
+
+  useEffect(() => {
+    async function performSearch() {
+      if (!debouncedSearchQuery.trim()) {
+        setSearchResults(null);
+        setIsSearching(false);
+        return;
+      }
+      setIsSearching(true);
+      try {
+        const res = await fetch(`/api/search?q=${encodeURIComponent(debouncedSearchQuery)}&category=${encodeURIComponent(activeCategory)}`);
+        if (res.ok) {
+          const data = await res.json();
+          setSearchResults(data);
+        }
+      } catch (err) {
+        console.error('Search error:', err);
+      } finally {
+        setIsSearching(false);
+      }
+    }
+    performSearch();
+  }, [debouncedSearchQuery, activeCategory]);
+
+  const filteredPosts = useMemo(() => {
+    if (searchResults !== null) {
+      return searchResults;
+    }
+
+    let posts = initialPosts;
     if (activeCategory !== 'All') {
       posts = posts.filter((p) => p.category === activeCategory);
     }
-
-    if (searchQuery.trim()) {
-      const q = searchQuery.toLowerCase().trim();
-      posts = posts.filter(
-        (p) =>
-          p.title.toLowerCase().includes(q) ||
-          p.excerpt.toLowerCase().includes(q) ||
-          p.tags.some((t) => t.toLowerCase().includes(q))
-      );
-    }
-
     return posts;
-  }, [initialPosts, activeCategory, searchQuery]);
+  }, [initialPosts, activeCategory, searchResults]);
 
   const handleCategoryChange = (category: string) => {
     setActiveCategory(category);
@@ -121,13 +151,20 @@ export default function BlogClientPage({ initialPosts }: BlogClientPageProps) {
         {/* Results summary */}
         {(searchQuery || activeCategory !== 'All') && (
           <div className="flex items-center gap-2 mb-6 text-sm text-slate-500 dark:text-gray-400">
-            <span>
-              {filteredPosts.length} result{filteredPosts.length !== 1 ? 's' : ''}
-            </span>
+            {isSearching ? (
+              <span className="flex items-center gap-2">
+                <div className="w-3 h-3 rounded-full border-2 border-green-500 border-t-transparent animate-spin" />
+                Searching...
+              </span>
+            ) : (
+              <span>
+                {filteredPosts.length} result{filteredPosts.length !== 1 ? 's' : ''}
+              </span>
+            )}
             {searchQuery && (
               <>
                 <span>for</span>
-                <span className="text-slate-900 dark:text-white font-medium">"{searchQuery}"</span>
+                <span className="text-slate-900 dark:text-white font-medium">&quot;{searchQuery}&quot;</span>
               </>
             )}
             {activeCategory !== 'All' && (

@@ -2,20 +2,23 @@ import { cookies } from 'next/headers';
 import { redirect } from 'next/navigation';
 import type { Metadata } from 'next';
 import PostEditor from '../PostEditor';
+import { verifyToken } from '@/lib/auth';
 
 export const metadata: Metadata = {
   title: 'New Post — Admin',
   robots: { index: false, follow: false },
 };
 
-function isAuthenticated(): boolean {
+async function isAuthenticated(): Promise<boolean> {
   const cookieStore = cookies();
-  const adminCookie = cookieStore.get('admin_token');
-  return adminCookie?.value === process.env.ADMIN_SECRET;
+  const token = cookieStore.get('admin_session')?.value;
+  if (!token) return false;
+  const payload = await verifyToken(token);
+  return payload?.email === process.env.ADMIN_EMAIL;
 }
 
-export default function NewPostPage() {
-  if (!isAuthenticated()) {
+export default async function NewPostPage() {
+  if (!(await isAuthenticated())) {
     redirect('/admin');
   }
 
