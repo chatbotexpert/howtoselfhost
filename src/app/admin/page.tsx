@@ -16,7 +16,7 @@ export const metadata: Metadata = {
 };
 
 async function isAuthenticated(): Promise<boolean> {
-  const cookieStore = cookies();
+  const cookieStore = await cookies();
   const token = cookieStore.get('admin_session')?.value;
   if (!token) return false;
   const payload = await verifyToken(token);
