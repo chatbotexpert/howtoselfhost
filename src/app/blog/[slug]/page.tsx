@@ -12,7 +12,9 @@ import MDXContent from '@/components/blog/MDXContent';
 import type { Post } from '@/types';
 
 interface PageProps {
-  params: { slug: string };
+  params: Promise<{
+    slug: string;
+  }>;
 }
 
 async function getPost(slug: string): Promise<Post | null> {
@@ -60,7 +62,8 @@ async function getAdjacentPosts(currentSlug: string, publishedAt: Date | string 
 }
 
 export async function generateMetadata({ params }: PageProps): Promise<Metadata> {
-  const post = await getPost(params.slug);
+  const { slug } = await params;
+  const post = await getPost(slug);
   if (!post) return { title: 'Post Not Found' };
 
   return {
@@ -91,7 +94,8 @@ export async function generateStaticParams() {
 }
 
 export default async function BlogPostPage({ params }: PageProps) {
-  const post = await getPost(params.slug);
+  const { slug } = await params;
+  const post = await getPost(slug);
 
   if (!post) {
     notFound();
