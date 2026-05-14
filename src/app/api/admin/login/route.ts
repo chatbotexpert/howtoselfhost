@@ -6,6 +6,8 @@ export async function POST(request: NextRequest) {
   try {
     const { email, password } = await request.json();
 
+    console.log(email, password)
+
     if (!email || !password) {
       return NextResponse.json({ error: 'Email and password are required' }, { status: 400 });
     }
@@ -18,11 +20,17 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'Server misconfiguration' }, { status: 500 });
     }
 
+    console.log(adminEmail)
+    console.log(adminHash)
+
+
     const emailMatch = email.toLowerCase() === adminEmail.toLowerCase();
     const passwordMatch = bcrypt.compareSync(password, adminHash);
 
+    console.log(emailMatch, passwordMatch)
+
+
     if (!emailMatch || !passwordMatch) {
-      // Same error message for both — don't reveal which is wrong
       return NextResponse.json({ error: 'Invalid email or password' }, { status: 401 });
     }
 
