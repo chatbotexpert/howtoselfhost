@@ -6,39 +6,60 @@ import { verifyAuth } from '@/lib/auth';
 export const dynamic = 'force-dynamic';
 
 interface RouteParams {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }
 
-export async function GET(request: NextRequest, { params }: RouteParams) {
+export async function GET(
+  request: NextRequest,
+  { params }: RouteParams
+) {
   try {
+    const { id } = await params;
+
     const post = await prisma.post.findUnique({
-      where: { id: params.id },
+      where: { id },
     });
 
     if (!post) {
-      return NextResponse.json({ error: 'Post not found' }, { status: 404 });
+      return NextResponse.json(
+        { error: 'Post not found' },
+        { status: 404 }
+      );
     }
 
     const parsedPost = {
       ...post,
-      tags: post.tags ? JSON.parse(post.tags) : []
+      tags: post.tags ? JSON.parse(post.tags) : [],
     };
 
     return NextResponse.json(parsedPost);
   } catch (error) {
     console.error('GET /api/posts/[id] error:', error);
-    return NextResponse.json({ error: 'Failed to fetch post' }, { status: 500 });
+
+    return NextResponse.json(
+      { error: 'Failed to fetch post' },
+      { status: 500 }
+    );
   }
 }
 
-export async function PUT(request: NextRequest, { params }: RouteParams) {
+export async function PUT(
+  request: NextRequest,
+  { params }: RouteParams
+) {
   try {
+    const { id } = await params;
+
     // Check admin auth
-    if (!await verifyAuth(request)) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    if (!(await verifyAuth(request))) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      );
     }
 
     const body = await request.json();
+
     const {
       title,
       slug,
@@ -52,34 +73,53 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
       publishedAt,
     } = body;
 
-    const existing = await prisma.post.findUnique({ where: { id: params.id } });
+    const existing = await prisma.post.findUnique({
+      where: { id },
+    });
+
     if (!existing) {
-      return NextResponse.json({ error: 'Post not found' }, { status: 404 });
+      return NextResponse.json(
+        { error: 'Post not found' },
+        { status: 404 }
+      );
     }
 
-    const readingTime = content ? calculateReadingTime(content) : existing.readingTime;
+    const readingTime = content
+      ? calculateReadingTime(content)
+      : existing.readingTime;
 
     const post = await prisma.post.update({
-      where: { id: params.id },
+      where: { id },
       data: {
         ...(title !== undefined && { title }),
         ...(slug !== undefined && { slug }),
         ...(excerpt !== undefined && { excerpt }),
-        ...(content !== undefined && { content, readingTime }),
+        ...(content !== undefined && {
+          content,
+          readingTime,
+        }),
         ...(coverImage !== undefined && { coverImage }),
         ...(category !== undefined && { category }),
-        ...(tags !== undefined && { tags: JSON.stringify(tags) }),
+        ...(tags !== undefined && {
+          tags: JSON.stringify(tags),
+        }),
         ...(published !== undefined && { published }),
         ...(featured !== undefined && { featured }),
         ...(publishedAt !== undefined && {
-          publishedAt: publishedAt ? new Date(publishedAt) : null,
+          publishedAt: publishedAt
+            ? new Date(publishedAt)
+            : null,
         }),
       },
     });
 
-    return NextResponse.json({ ...post, tags: tags || JSON.parse(post.tags) });
+    return NextResponse.json({
+      ...post,
+      tags: tags || JSON.parse(post.tags),
+    });
   } catch (error: unknown) {
     console.error('PUT /api/posts/[id] error:', error);
+
     if (
       error instanceof Error &&
       error.message.includes('Unique constraint')
@@ -89,27 +129,51 @@ export async function PUT(request: NextRequest, { params }: RouteParams) {
         { status: 409 }
       );
     }
-    return NextResponse.json({ error: 'Failed to update post' }, { status: 500 });
+
+    return NextResponse.json(
+      { error: 'Failed to update post' },
+      { status: 500 }
+    );
   }
 }
 
-export async function DELETE(request: NextRequest, { params }: RouteParams) {
+export async function DELETE(
+  request: NextRequest,
+  { params }: RouteParams
+) {
   try {
+    const { id } = await params;
+
     // Check admin auth
-    if (!await verifyAuth(request)) {
-      return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
+    if (!(await verifyAuth(request))) {
+      return NextResponse.json(
+        { error: 'Unauthorized' },
+        { status: 401 }
+      );
     }
 
-    const existing = await prisma.post.findUnique({ where: { id: params.id } });
+    const existing = await prisma.post.findUnique({
+      where: { id },
+    });
+
     if (!existing) {
-      return NextResponse.json({ error: 'Post not found' }, { status: 404 });
+      return NextResponse.json(
+        { error: 'Post not found' },
+        { status: 404 }
+      );
     }
 
-    await prisma.post.delete({ where: { id: params.id } });
+    await prisma.post.delete({
+      where: { id },
+    });
 
     return NextResponse.json({ success: true });
   } catch (error) {
     console.error('DELETE /api/posts/[id] error:', error);
-    return NextResponse.json({ error: 'Failed to delete post' }, { status: 500 });
+
+    return NextResponse.json(
+      { error: 'Failed to delete post' },
+      { status: 500 }
+    );
   }
 }
