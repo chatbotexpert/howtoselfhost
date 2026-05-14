@@ -1,6 +1,8 @@
 import { NextResponse } from 'next/server';
 import prisma from '@/lib/prisma';
 
+export const dynamic = 'force-dynamic';
+
 export async function GET(request: Request) {
   const { searchParams } = new URL(request.url);
   const q = searchParams.get('q')?.toLowerCase() || '';
@@ -17,10 +19,10 @@ export async function GET(request: Request) {
       // In SQLite, basic LIKE operations are case-insensitive by default in Prisma for some setups, 
       // but to be safe, we can use contains. Prisma SQLite provider supports 'contains'.
       whereClause.OR = [
-        { title: { contains: q } },
-        { excerpt: { contains: q } },
-        { content: { contains: q } },
-        { tags: { contains: q } },
+        { title: { contains: q, mode: 'insensitive' } },
+        { excerpt: { contains: q, mode: 'insensitive' } },
+        { content: { contains: q, mode: 'insensitive' } },
+        { tags: { contains: q, mode: 'insensitive' } },
       ];
     }
 
