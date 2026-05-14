@@ -9,11 +9,11 @@ import type { TableOfContentsItem } from '@/types';
 export async function serializeMDX(content: string) {
   const mdxSource = await serialize(content, {
     mdxOptions: {
-      remarkPlugins: [remarkGfm],
+      remarkPlugins: [remarkGfm as any],
       rehypePlugins: [
-        rehypeSlug,
+        rehypeSlug as any,
         [
-          rehypeAutolinkHeadings,
+          rehypeAutolinkHeadings as any,
           {
             behavior: 'wrap',
             properties: {
@@ -22,7 +22,7 @@ export async function serializeMDX(content: string) {
           },
         ],
         [
-          rehypeHighlight,
+          rehypeHighlight as any,
           {
             ignoreMissing: true,
           },
@@ -35,7 +35,6 @@ export async function serializeMDX(content: string) {
 
   return mdxSource;
 }
-
 export function extractTableOfContents(content: string): TableOfContentsItem[] {
   const headingRegex = /^(#{2,3})\s+(.+)$/gm;
   const items: TableOfContentsItem[] = [];
