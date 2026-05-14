@@ -5,6 +5,8 @@ import LiveCounter from '@/components/ui/LiveCounter';
 import prisma from '@/lib/prisma';
 import type { Post } from '@/types';
 
+export const dynamic = 'force-dynamic';
+
 async function getFeaturedPosts(): Promise<Post[]> {
   try {
     const posts = await prisma.post.findMany({
@@ -12,9 +14,9 @@ async function getFeaturedPosts(): Promise<Post[]> {
       orderBy: { publishedAt: 'desc' },
       take: 3,
     }) as any[];
-    return posts.map(p => ({ 
-      ...p, 
-      tags: p.tags ? (JSON.parse(p.tags) as string[]) : [] 
+    return posts.map(p => ({
+      ...p,
+      tags: p.tags ? (JSON.parse(p.tags) as string[]) : []
     })) as Post[];
   } catch {
     return [];
@@ -28,9 +30,9 @@ async function getHotPosts(): Promise<Post[]> {
       orderBy: { publishedAt: 'desc' },
       take: 4,
     }) as any[];
-    return posts.map(p => ({ 
-      ...p, 
-      tags: p.tags ? (JSON.parse(p.tags) as string[]) : [] 
+    return posts.map(p => ({
+      ...p,
+      tags: p.tags ? (JSON.parse(p.tags) as string[]) : []
     })) as Post[];
   } catch {
     return [];
@@ -52,19 +54,19 @@ async function getStats() {
 }
 
 const categories = [
-  { name: 'Docker',       slug: 'docker',       icon: Box,           color: 'text-blue-500',   bg: 'bg-blue-50   dark:bg-blue-500/10   border-blue-200   dark:border-blue-500/20   hover:bg-blue-100   dark:hover:bg-blue-500/20',   description: 'Containerize and deploy apps' },
-  { name: 'VPS',          slug: 'vps',          icon: Server,        color: 'text-purple-500', bg: 'bg-purple-50 dark:bg-purple-500/10 border-purple-200 dark:border-purple-500/20 hover:bg-purple-100 dark:hover:bg-purple-500/20', description: 'Server setup and management' },
-  { name: 'Nginx',        slug: 'nginx',        icon: Globe,         color: 'text-green-500',  bg: 'bg-green-50  dark:bg-green-500/10  border-green-200  dark:border-green-500/20  hover:bg-green-100  dark:hover:bg-green-500/20',  description: 'Reverse proxy and web server' },
-  { name: 'Databases',    slug: 'databases',    icon: Database,      color: 'text-orange-500', bg: 'bg-orange-50 dark:bg-orange-500/10 border-orange-200 dark:border-orange-500/20 hover:bg-orange-100 dark:hover:bg-orange-500/20', description: 'PostgreSQL, MySQL, Redis' },
-  { name: 'Security',     slug: 'security',     icon: Shield,        color: 'text-red-500',    bg: 'bg-red-50    dark:bg-red-500/10    border-red-200    dark:border-red-500/20    hover:bg-red-100    dark:hover:bg-red-500/20',    description: 'SSL, firewalls, hardening' },
-  { name: 'Monitoring',   slug: 'monitoring',   icon: Activity,      color: 'text-yellow-500', bg: 'bg-yellow-50 dark:bg-yellow-500/10 border-yellow-200 dark:border-yellow-500/20 hover:bg-yellow-100 dark:hover:bg-yellow-500/20', description: 'Uptime, metrics, alerts' },
-  { name: 'Blockchain',   slug: 'blockchain',   icon: Cpu,           color: 'text-indigo-500', bg: 'bg-indigo-50 dark:bg-indigo-500/10 border-indigo-200 dark:border-indigo-500/20 hover:bg-indigo-100 dark:hover:bg-indigo-500/20', description: 'Nodes, staking, wallets' },
-  { name: 'Media',        slug: 'media',        icon: PlayCircle,    color: 'text-pink-500',   bg: 'bg-pink-50 dark:bg-pink-500/10 border-pink-200 dark:border-pink-500/20 hover:bg-pink-100 dark:hover:bg-pink-500/20', description: 'Plex, Jellyfin, audio' },
-  { name: 'Files',        slug: 'files',        icon: FolderDown,    color: 'text-teal-500',   bg: 'bg-teal-50 dark:bg-teal-500/10 border-teal-200 dark:border-teal-500/20 hover:bg-teal-100 dark:hover:bg-teal-500/20', description: 'Nextcloud, Syncthing, NAS' },
-  { name: 'VPN',          slug: 'vpn',          icon: Network,       color: 'text-cyan-500',   bg: 'bg-cyan-50 dark:bg-cyan-500/10 border-cyan-200 dark:border-cyan-500/20 hover:bg-cyan-100 dark:hover:bg-cyan-500/20', description: 'WireGuard, OpenVPN, mesh' },
-  { name: 'Automation',   slug: 'automation',   icon: Zap,           color: 'text-amber-500',  bg: 'bg-amber-50 dark:bg-amber-500/10 border-amber-200 dark:border-amber-500/20 hover:bg-amber-100 dark:hover:bg-amber-500/20', description: 'Home Assistant, n8n' },
-  { name: 'CI/CD',        slug: 'cicd',         icon: GitBranch,     color: 'text-rose-500',   bg: 'bg-rose-50 dark:bg-rose-500/10 border-rose-200 dark:border-rose-500/20 hover:bg-rose-100 dark:hover:bg-rose-500/20', description: 'GitHub Actions, Jenkins' },
-  { name: 'Communication',slug: 'communication',icon: MessageSquare, color: 'text-fuchsia-500',bg: 'bg-fuchsia-50 dark:bg-fuchsia-500/10 border-fuchsia-200 dark:border-fuchsia-500/20 hover:bg-fuchsia-100 dark:hover:bg-fuchsia-500/20', description: 'Matrix, Mattermost, IRC' },
+  { name: 'Docker', slug: 'docker', icon: Box, color: 'text-blue-500', bg: 'bg-blue-50   dark:bg-blue-500/10   border-blue-200   dark:border-blue-500/20   hover:bg-blue-100   dark:hover:bg-blue-500/20', description: 'Containerize and deploy apps' },
+  { name: 'VPS', slug: 'vps', icon: Server, color: 'text-purple-500', bg: 'bg-purple-50 dark:bg-purple-500/10 border-purple-200 dark:border-purple-500/20 hover:bg-purple-100 dark:hover:bg-purple-500/20', description: 'Server setup and management' },
+  { name: 'Nginx', slug: 'nginx', icon: Globe, color: 'text-green-500', bg: 'bg-green-50  dark:bg-green-500/10  border-green-200  dark:border-green-500/20  hover:bg-green-100  dark:hover:bg-green-500/20', description: 'Reverse proxy and web server' },
+  { name: 'Databases', slug: 'databases', icon: Database, color: 'text-orange-500', bg: 'bg-orange-50 dark:bg-orange-500/10 border-orange-200 dark:border-orange-500/20 hover:bg-orange-100 dark:hover:bg-orange-500/20', description: 'PostgreSQL, MySQL, Redis' },
+  { name: 'Security', slug: 'security', icon: Shield, color: 'text-red-500', bg: 'bg-red-50    dark:bg-red-500/10    border-red-200    dark:border-red-500/20    hover:bg-red-100    dark:hover:bg-red-500/20', description: 'SSL, firewalls, hardening' },
+  { name: 'Monitoring', slug: 'monitoring', icon: Activity, color: 'text-yellow-500', bg: 'bg-yellow-50 dark:bg-yellow-500/10 border-yellow-200 dark:border-yellow-500/20 hover:bg-yellow-100 dark:hover:bg-yellow-500/20', description: 'Uptime, metrics, alerts' },
+  { name: 'Blockchain', slug: 'blockchain', icon: Cpu, color: 'text-indigo-500', bg: 'bg-indigo-50 dark:bg-indigo-500/10 border-indigo-200 dark:border-indigo-500/20 hover:bg-indigo-100 dark:hover:bg-indigo-500/20', description: 'Nodes, staking, wallets' },
+  { name: 'Media', slug: 'media', icon: PlayCircle, color: 'text-pink-500', bg: 'bg-pink-50 dark:bg-pink-500/10 border-pink-200 dark:border-pink-500/20 hover:bg-pink-100 dark:hover:bg-pink-500/20', description: 'Plex, Jellyfin, audio' },
+  { name: 'Files', slug: 'files', icon: FolderDown, color: 'text-teal-500', bg: 'bg-teal-50 dark:bg-teal-500/10 border-teal-200 dark:border-teal-500/20 hover:bg-teal-100 dark:hover:bg-teal-500/20', description: 'Nextcloud, Syncthing, NAS' },
+  { name: 'VPN', slug: 'vpn', icon: Network, color: 'text-cyan-500', bg: 'bg-cyan-50 dark:bg-cyan-500/10 border-cyan-200 dark:border-cyan-500/20 hover:bg-cyan-100 dark:hover:bg-cyan-500/20', description: 'WireGuard, OpenVPN, mesh' },
+  { name: 'Automation', slug: 'automation', icon: Zap, color: 'text-amber-500', bg: 'bg-amber-50 dark:bg-amber-500/10 border-amber-200 dark:border-amber-500/20 hover:bg-amber-100 dark:hover:bg-amber-500/20', description: 'Home Assistant, n8n' },
+  { name: 'CI/CD', slug: 'cicd', icon: GitBranch, color: 'text-rose-500', bg: 'bg-rose-50 dark:bg-rose-500/10 border-rose-200 dark:border-rose-500/20 hover:bg-rose-100 dark:hover:bg-rose-500/20', description: 'GitHub Actions, Jenkins' },
+  { name: 'Communication', slug: 'communication', icon: MessageSquare, color: 'text-fuchsia-500', bg: 'bg-fuchsia-50 dark:bg-fuchsia-500/10 border-fuchsia-200 dark:border-fuchsia-500/20 hover:bg-fuchsia-100 dark:hover:bg-fuchsia-500/20', description: 'Matrix, Mattermost, IRC' },
 ];
 
 export default async function HomePage() {
@@ -182,7 +184,7 @@ export default async function HomePage() {
               <p className="text-slate-600 dark:text-gray-400 text-lg mb-10 leading-relaxed">
                 The average developer spends up to 15 hours troubleshooting outdated blog posts and fragmented documentation just to self-host a single service. Our managed, end-to-end guides guarantee 100% technical accuracy, getting you to a production-ready state in under 2 hours.
               </p>
-              
+
               <ul className="space-y-5">
                 {[
                   { title: "Immediate ROI", desc: "Deploy your first app efficiently on day one." },
@@ -205,9 +207,9 @@ export default async function HomePage() {
             {/* Right Box: CSS Chart */}
             <div className="bg-white dark:bg-gray-950 border border-slate-200 dark:border-gray-800 rounded-3xl p-7 sm:p-10 shadow-xl shadow-slate-200/50 dark:shadow-none relative overflow-hidden">
               <div className="absolute top-0 right-0 w-64 h-64 bg-green-500/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none" />
-              
+
               <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-10">Average Time to Production</h3>
-              
+
               <div className="space-y-10 relative z-10">
                 {/* Competitor / Standard search */}
                 <div>
@@ -333,7 +335,8 @@ export default async function HomePage() {
             <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">Browse by Topic</h2>
             <p className="text-gray-500 dark:text-gray-400">Find guides organized by technology and use case</p>
           </div>
-          <style dangerouslySetInnerHTML={{ __html: `
+          <style dangerouslySetInnerHTML={{
+            __html: `
             @keyframes scroll {
               0% { transform: translateX(0); }
               100% { transform: translateX(calc(-50% - 0.5rem)); }
