@@ -41,7 +41,7 @@ export default function Footer() {
                 howtoselfhost<span className="text-green-500">.com</span>
               </span>
             </Link>
-            <p className="text-gray-500 dark:text-gray-400 text-sm leading-relaxed">
+            <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
               Practical guides for self-hosting your own infrastructure. From Docker containers to VPS setup.
             </p>
             {/* VPS Services link */}
@@ -83,7 +83,7 @@ export default function Footer() {
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="text-gray-500 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400 text-sm transition-colors duration-200"
+                      className="text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400 text-sm transition-colors duration-200"
                     >
                       {link.label}
                     </Link>
@@ -95,10 +95,10 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-gray-200 dark:border-gray-800 mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-gray-500 dark:text-gray-500 text-sm">
+          <p className="text-gray-600 dark:text-gray-400 text-sm">
             © {currentYear} howtoselfhost.com — Self-host everything.
           </p>
-          <p className="text-gray-400 dark:text-gray-600 text-xs font-mono">
+          <p className="text-gray-500 dark:text-gray-400 text-xs font-mono">
             Built with Next.js + PostgreSQL
           </p>
         </div>

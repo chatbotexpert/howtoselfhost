@@ -47,7 +47,7 @@ export default function PostCard({ post, featured = false }: PostCardProps) {
       {/* Content */}
       <div className="flex flex-col flex-1 p-5">
         {/* Meta row */}
-        <div className="flex items-center gap-3 text-xs text-slate-500 dark:text-gray-500 mb-3">
+        <div className="flex items-center gap-3 text-xs text-slate-600 dark:text-gray-400 mb-3">
           <span className="flex items-center gap-1">
             <Calendar className="w-3.5 h-3.5" />
             {formatDateShort(post.publishedAt ?? post.createdAt)}
@@ -74,7 +74,7 @@ export default function PostCard({ post, featured = false }: PostCardProps) {
           {post.tags && post.tags.length > 0 ? (
             <div className="flex flex-wrap gap-1.5">
               {post.tags.slice(0, 2).map((tag) => (
-                <span key={tag} className="text-xs text-slate-500 dark:text-gray-500 bg-slate-100 dark:bg-gray-800 px-2 py-0.5 rounded-md font-mono">
+                <span key={tag} className="text-xs text-slate-600 dark:text-gray-400 bg-slate-100 dark:bg-gray-800 px-2 py-0.5 rounded-md font-mono">
                   #{tag}
                 </span>
               ))}
