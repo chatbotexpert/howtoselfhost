@@ -87,7 +87,7 @@ export default function PostCard({ post, featured = false }: PostCardProps) {
             href={`/blog/${post.slug}`}
             className="flex items-center gap-1.5 text-xs font-semibold text-green-600 dark:text-green-500 hover:text-green-700 dark:hover:text-green-400 transition-colors duration-200 flex-shrink-0"
           >
-            Read more
+            Read more<span className="sr-only"> about {post.title}</span>
             <ArrowRight className="w-3.5 h-3.5 group-hover:translate-x-0.5 transition-transform duration-200" />
           </Link>
         </div>
