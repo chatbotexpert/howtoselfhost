@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
 import Image from 'next/image';
+import Script from 'next/script';
 import { ArrowLeft, ArrowRight, Clock, Calendar, Tag } from 'lucide-react';
 import type { Metadata } from 'next';
 import prisma from '@/lib/prisma';
@@ -128,7 +129,8 @@ export default async function BlogPostPage({ params }: PageProps) {
 
   return (
     <div className="min-h-screen">
-      <script
+      <Script
+        id={`article-schema-${post.slug}`}
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />

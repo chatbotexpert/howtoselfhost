@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Script from 'next/script';
 import { ArrowRight, Server, Shield, Database, Globe, Activity, Box, Flame, ExternalLink, BookOpen, Tag, Users, Cpu, PlayCircle, FolderDown, Network, Zap, GitBranch, MessageSquare, Clock, ShieldCheck } from 'lucide-react';
 import PostCard from '@/components/blog/PostCard';
 import LiveCounter from '@/components/ui/LiveCounter';
@@ -6,6 +7,11 @@ import prisma from '@/lib/prisma';
 import type { Post } from '@/types';
 
 export const dynamic = 'force-dynamic';
+
+export const metadata = {
+  title: 'howtoselfhost.com — Self-Host Everything',
+  description: 'Practical, production-ready guides for hosting your own Docker containers, VPS servers, databases, and web services. Own your infrastructure, own your data.',
+};
 
 async function getFeaturedPosts(): Promise<Post[]> {
   try {
@@ -91,7 +97,8 @@ export default async function HomePage() {
 
   return (
     <div className="min-h-screen">
-      <script
+      <Script
+        id="website-schema"
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
@@ -213,8 +220,8 @@ export default async function HomePage() {
                       <div className="w-2.5 h-2.5 rounded-full bg-green-500" />
                     </div>
                     <div>
-                      <h4 className="font-semibold text-slate-900 dark:text-white">{item.title}</h4>
-                      <p className="text-sm text-slate-500 dark:text-gray-500 mt-1 pl-0.5">{item.desc}</p>
+                      <h3 className="font-semibold text-slate-900 dark:text-white">{item.title}</h3>
+                      <p className="text-sm text-slate-600 dark:text-gray-400 mt-1 pl-0.5">{item.desc}</p>
                     </div>
                   </li>
                 ))}
@@ -268,7 +275,7 @@ export default async function HomePage() {
                 </div>
                 <div>
                   <div className="text-3xl font-bold text-slate-900 dark:text-white font-mono leading-none mb-1.5 flex items-end gap-1">
-                    86% <span className="text-sm font-sans font-medium text-slate-400 dark:text-gray-500 mb-1">faster</span>
+                    86% <span className="text-sm font-sans font-medium text-slate-600 dark:text-gray-400 mb-1">faster</span>
                   </div>
                   <div className="text-sm text-slate-600 dark:text-gray-400">
                     Average deployment time reduction.
@@ -291,7 +298,7 @@ export default async function HomePage() {
                 </div>
                 <div>
                   <h2 className="text-xl font-bold text-gray-900 dark:text-white">Hot Right Now</h2>
-                  <p className="text-xs text-gray-400 dark:text-gray-500">Most recently published</p>
+                  <p className="text-xs text-gray-500 dark:text-gray-400">Most recently published</p>
                 </div>
               </div>
               <Link href="/blog" className="text-sm text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 font-medium flex items-center gap-1 transition-colors duration-200">
@@ -313,7 +320,7 @@ export default async function HomePage() {
                     <p className="text-sm font-semibold text-gray-900 dark:text-white group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors duration-200 leading-snug line-clamp-2 mb-1.5">
                       {post.title}
                     </p>
-                    <p className="text-xs text-gray-400 dark:text-gray-500 font-mono">{post.category} · {post.readingTime} min read</p>
+                    <p className="text-xs text-gray-500 dark:text-gray-400 font-mono">{post.category} · {post.readingTime} min read</p>
                   </div>
                 </Link>
               ))}
@@ -382,7 +389,7 @@ export default async function HomePage() {
                       <Icon className={`w-5 h-5 ${cat.color}`} />
                     </div>
                     <div className={`text-sm font-semibold ${cat.color}`}>{cat.name}</div>
-                    <div className="text-xs text-gray-500 dark:text-gray-500 mt-1">{cat.description}</div>
+                    <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">{cat.description}</div>
                   </Link>
                 );
               })}
@@ -426,7 +433,7 @@ export default async function HomePage() {
               Start with our beginner-friendly Docker guide and work your way up to a full self-hosted stack.
             </p>
             <Link href="/blog/getting-started-with-docker-self-host-your-first-app"
-              className="inline-flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white font-semibold px-8 py-3 rounded-lg transition-colors duration-200 shadow-lg shadow-green-500/20"
+              className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white font-semibold px-8 py-3 rounded-lg transition-colors duration-200 shadow-lg shadow-green-500/20"
             >
               Start Learning
               <ArrowRight className="w-4 h-4" />
