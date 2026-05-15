@@ -76,8 +76,25 @@ export default async function HomePage() {
     getStats(),
   ]);
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'WebSite',
+    name: 'howtoselfhost.com',
+    url: 'https://howtoselfhost.com',
+    description: 'Practical, production-ready guides for hosting your own Docker containers, VPS servers, databases, and web services.',
+    potentialAction: {
+      '@type': 'SearchAction',
+      target: 'https://howtoselfhost.com/blog?q={search_term_string}',
+      'query-input': 'required name=search_term_string',
+    },
+  };
+
   return (
     <div className="min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
 
       {/* ── HERO ─────────────────────────────────────────────── */}
       <section className="relative overflow-hidden border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950">

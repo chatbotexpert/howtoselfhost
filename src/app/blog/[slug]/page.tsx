@@ -110,8 +110,28 @@ export default async function BlogPostPage({ params }: PageProps) {
 
   const tocItems = extractTableOfContents(post.content);
 
+  const jsonLd = {
+    '@context': 'https://schema.org',
+    '@type': 'BlogPosting',
+    headline: post.title,
+    description: post.excerpt,
+    image: post.coverImage ? [post.coverImage] : [],
+    datePublished: post.publishedAt ? new Date(post.publishedAt).toISOString() : new Date(post.createdAt).toISOString(),
+    dateModified: new Date(post.updatedAt || post.createdAt).toISOString(),
+    author: [{
+      '@type': 'Organization',
+      name: 'howtoselfhost.com',
+      url: 'https://howtoselfhost.com',
+    }],
+    keywords: post.tags.join(', ')
+  };
+
   return (
     <div className="min-h-screen">
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+      />
       {/* Cover Image Hero */}
       {post.coverImage && (
         <div className="relative w-full h-64 sm:h-80 lg:h-96 overflow-hidden bg-slate-100 dark:bg-gray-900 shadow-inner">
