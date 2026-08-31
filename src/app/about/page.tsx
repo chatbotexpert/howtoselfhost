@@ -71,7 +71,7 @@ export default function AboutPage() {
                   className="flex items-center gap-3 p-3 rounded-lg bg-white dark:bg-gray-900/50 border border-gray-200 dark:border-gray-800 shadow-sm dark:shadow-none"
                 >
                   <Icon className={`w-5 h-5 ${item.color} flex-shrink-0`} />
-                  <span className="text-gray-800 dark:text-gray-200 text-sm">{item.label}</span>
+                  <span className="text-slate-800 dark:text-gray-200 text-sm">{item.label}</span>
                 </div>
               );
             })}

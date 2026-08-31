@@ -22,7 +22,7 @@ interface PageProps {
 
 async function getPost(slug: string): Promise<Post | null> {
   try {
-    const post = await prisma.post.findUnique({
+    const post = await prisma.post.findFirst({
       where: { slug, published: true },
     });
     if (!post) return null;

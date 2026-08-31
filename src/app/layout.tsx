@@ -1,13 +1,13 @@
 import type { Metadata } from 'next';
-import { Inter, JetBrains_Mono } from 'next/font/google';
+import { Baloo_Bhai_2, JetBrains_Mono } from 'next/font/google';
 import { ThemeProvider } from 'next-themes';
 import Header from '@/components/layout/Header';
 import Footer from '@/components/layout/Footer';
 import './globals.css';
 
-const inter = Inter({
+const baloo = Baloo_Bhai_2({
   subsets: ['latin'],
-  variable: '--font-inter',
+  variable: '--font-baloo',
   display: 'swap',
 });
 
@@ -66,14 +66,14 @@ export default function RootLayout({
     <html
       lang="en"
       suppressHydrationWarning
-      className={`${inter.variable} ${jetbrainsMono.variable}`}
+      className={`${baloo.variable} ${jetbrainsMono.variable}`}
     >
-      <body className="min-h-screen font-sans flex flex-col bg-slate-50 dark:bg-gray-950 text-slate-900 dark:text-gray-100 transition-colors duration-200">
+      <body suppressHydrationWarning className="min-h-screen font-sans flex flex-col bg-slate-50 dark:bg-gray-950 text-slate-900 dark:text-gray-100 transition-colors duration-200">
         <ThemeProvider
           attribute="class"
-          defaultTheme="dark"
+          defaultTheme="light"
           enableSystem={false}
-          storageKey="howtoselfhost-theme"
+          storageKey="howtoselfhost-theme-v2"
           disableTransitionOnChange={false}
         >
           <Header />

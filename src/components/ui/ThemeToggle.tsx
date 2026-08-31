@@ -15,7 +15,7 @@ export default function ThemeToggle() {
   if (!mounted) {
     return (
       <button
-        className="w-9 h-9 flex items-center justify-center rounded-lg bg-gray-100 dark:bg-gray-800 border border-gray-200 dark:border-gray-700"
+        className="w-8 h-8 flex items-center justify-center rounded-full border border-slate-300 dark:border-gray-700 bg-slate-50 dark:bg-gray-950"
         aria-label="Toggle theme"
       >
         <span className="w-4 h-4 block" />
@@ -26,7 +26,7 @@ export default function ThemeToggle() {
   return (
     <button
       onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
-      className="group relative w-10 h-10 flex items-center justify-center rounded-xl bg-white dark:bg-gray-900 border border-gray-200 dark:border-gray-800 hover:border-green-500/50 dark:hover:border-green-500/50 transition-all duration-300 shadow-sm hover:shadow-md overflow-hidden"
+      className="group relative w-8 h-8 flex items-center justify-center rounded-full border border-slate-300 dark:border-gray-700 bg-slate-50 dark:bg-gray-950 hover:border-brand-500 transition-all duration-300 overflow-hidden"
       aria-label={theme === 'dark' ? 'Switch to light mode' : 'Switch to dark mode'}
     >
       <div className="relative w-5 h-5 flex items-center justify-center">
@@ -37,8 +37,7 @@ export default function ThemeToggle() {
         )}
       </div>
       
-      {/* Subtle background glow on hover */}
-      <div className="absolute inset-0 bg-gradient-to-tr from-green-500/0 to-green-500/5 opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+      <div className="absolute inset-0 bg-slate-200 dark:bg-gray-800 opacity-0 group-hover:opacity-20 transition-opacity duration-300" />
     </button>
   );
 }

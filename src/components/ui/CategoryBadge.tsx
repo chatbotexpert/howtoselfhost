@@ -13,10 +13,14 @@ export default function CategoryBadge({
   className,
 }: CategoryBadgeProps) {
   const colors = CATEGORY_TAILWIND[category] ?? {
-    bg: 'bg-gray-500/10',
-    text: 'text-gray-400',
-    border: 'border-gray-500/20',
+    bg: 'bg-slate-800 dark:bg-gray-800',
+    text: 'text-white',
+    border: 'border-slate-700 dark:border-gray-700',
   };
+
+  // Enhance colors to be solid instead of transparent
+  const solidBg = colors.bg.replace('/10', '').replace('/20', '').replace('bg-', 'bg-').replace('-500', '-600');
+  const brightText = 'text-white';
 
   return (
     <span

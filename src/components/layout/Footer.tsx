@@ -28,17 +28,17 @@ export default function Footer() {
   const currentYear = new Date().getFullYear();
 
   return (
-    <footer className="border-t border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-950 mt-auto">
+    <footer className="border-t-2 border-slate-200 dark:border-gray-800 bg-slate-50 dark:bg-gray-950 mt-auto">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
         <div className="grid grid-cols-1 md:grid-cols-4 gap-8">
           {/* Brand */}
           <div className="md:col-span-1">
-            <Link href="/" className="flex items-center gap-2 mb-4">
-              <div className="w-7 h-7 rounded-lg bg-green-500/10 border border-green-500/20 flex items-center justify-center">
-                <Terminal className="w-3.5 h-3.5 text-green-500" />
+            <Link href="/" className="flex items-center gap-2 mb-4 group">
+              <div className="w-7 h-7 rounded-sm border border-slate-300 dark:border-gray-700 flex items-center justify-center group-hover:border-brand-500 transition-colors duration-200">
+                <Terminal className="w-3.5 h-3.5 text-brand-500" />
               </div>
-              <span className="font-mono text-sm font-bold text-gray-900 dark:text-white">
-                howtoselfhost<span className="text-green-500">.com</span>
+              <span className="font-serif text-sm font-bold text-gray-900 dark:text-white tracking-wide">
+                howtoselfhost<span className="text-brand-500">.com</span>
               </span>
             </Link>
             <p className="text-gray-600 dark:text-gray-400 text-sm leading-relaxed">
@@ -46,10 +46,10 @@ export default function Footer() {
             </p>
             {/* VPS Services link */}
             <a
-              href="https://vps.howtoselfhost.com"
+              href="https://vps-howtoselfhost-com.vercel.app"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 mt-3 text-sm text-purple-600 dark:text-purple-400 hover:text-purple-700 dark:hover:text-purple-300 font-medium transition-colors duration-200"
+              className="inline-flex items-center gap-1.5 mt-3 text-[11px] uppercase tracking-widest font-bold text-brand-600 dark:text-brand-400 hover:text-brand-700 dark:hover:text-brand-300 transition-colors duration-200"
             >
               VPS Services
               <ExternalLink className="w-3 h-3" />
@@ -77,13 +77,13 @@ export default function Footer() {
           {/* Links */}
           {Object.entries(footerLinks).map(([section, links]) => (
             <div key={section}>
-              <h3 className="text-gray-900 dark:text-white font-semibold text-sm mb-3">{section}</h3>
+              <h3 className="text-slate-800 dark:text-gray-200 font-bold text-[11px] uppercase tracking-widest mb-4">{section}</h3>
               <ul className="space-y-2">
                 {links.map((link) => (
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="text-gray-600 dark:text-gray-400 hover:text-green-600 dark:hover:text-green-400 text-sm transition-colors duration-200"
+                      className="text-slate-600 dark:text-gray-400 hover:text-brand-600 dark:hover:text-brand-400 text-sm transition-colors duration-200"
                     >
                       {link.label}
                     </Link>
@@ -94,11 +94,11 @@ export default function Footer() {
           ))}
         </div>
 
-        <div className="border-t border-gray-200 dark:border-gray-800 mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
-          <p className="text-gray-600 dark:text-gray-400 text-sm">
+        <div className="border-t border-slate-200 dark:border-gray-800 mt-10 pt-6 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <p className="text-slate-600 dark:text-gray-400 text-sm italic">
             © {currentYear} howtoselfhost.com — Self-host everything.
           </p>
-          <p className="text-gray-500 dark:text-gray-400 text-xs font-mono">
+          <p className="text-slate-400 dark:text-gray-500 text-[11px] uppercase tracking-widest">
             Built with Next.js + PostgreSQL
           </p>
         </div>

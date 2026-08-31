@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import Image from 'next/image';
 import Script from 'next/script';
 import { ArrowRight, Server, Shield, Database, Globe, Activity, Box, Flame, ExternalLink, BookOpen, Tag, Users, Cpu, PlayCircle, FolderDown, Network, Zap, GitBranch, MessageSquare, Clock, ShieldCheck } from 'lucide-react';
 import PostCard from '@/components/blog/PostCard';
@@ -60,19 +61,19 @@ async function getStats() {
 }
 
 const categories = [
-  { name: 'Docker', slug: 'docker', icon: Box, color: 'text-blue-500', bg: 'bg-blue-50   dark:bg-blue-500/10   border-blue-200   dark:border-blue-500/20   hover:bg-blue-100   dark:hover:bg-blue-500/20', description: 'Containerize and deploy apps' },
-  { name: 'VPS', slug: 'vps', icon: Server, color: 'text-purple-500', bg: 'bg-purple-50 dark:bg-purple-500/10 border-purple-200 dark:border-purple-500/20 hover:bg-purple-100 dark:hover:bg-purple-500/20', description: 'Server setup and management' },
-  { name: 'Nginx', slug: 'nginx', icon: Globe, color: 'text-green-500', bg: 'bg-green-50  dark:bg-green-500/10  border-green-200  dark:border-green-500/20  hover:bg-green-100  dark:hover:bg-green-500/20', description: 'Reverse proxy and web server' },
-  { name: 'Databases', slug: 'databases', icon: Database, color: 'text-orange-500', bg: 'bg-orange-50 dark:bg-orange-500/10 border-orange-200 dark:border-orange-500/20 hover:bg-orange-100 dark:hover:bg-orange-500/20', description: 'PostgreSQL, MySQL, Redis' },
-  { name: 'Security', slug: 'security', icon: Shield, color: 'text-red-500', bg: 'bg-red-50    dark:bg-red-500/10    border-red-200    dark:border-red-500/20    hover:bg-red-100    dark:hover:bg-red-500/20', description: 'SSL, firewalls, hardening' },
-  { name: 'Monitoring', slug: 'monitoring', icon: Activity, color: 'text-yellow-500', bg: 'bg-yellow-50 dark:bg-yellow-500/10 border-yellow-200 dark:border-yellow-500/20 hover:bg-yellow-100 dark:hover:bg-yellow-500/20', description: 'Uptime, metrics, alerts' },
-  { name: 'Blockchain', slug: 'blockchain', icon: Cpu, color: 'text-indigo-500', bg: 'bg-indigo-50 dark:bg-indigo-500/10 border-indigo-200 dark:border-indigo-500/20 hover:bg-indigo-100 dark:hover:bg-indigo-500/20', description: 'Nodes, staking, wallets' },
-  { name: 'Media', slug: 'media', icon: PlayCircle, color: 'text-pink-500', bg: 'bg-pink-50 dark:bg-pink-500/10 border-pink-200 dark:border-pink-500/20 hover:bg-pink-100 dark:hover:bg-pink-500/20', description: 'Plex, Jellyfin, audio' },
-  { name: 'Files', slug: 'files', icon: FolderDown, color: 'text-teal-500', bg: 'bg-teal-50 dark:bg-teal-500/10 border-teal-200 dark:border-teal-500/20 hover:bg-teal-100 dark:hover:bg-teal-500/20', description: 'Nextcloud, Syncthing, NAS' },
-  { name: 'VPN', slug: 'vpn', icon: Network, color: 'text-cyan-500', bg: 'bg-cyan-50 dark:bg-cyan-500/10 border-cyan-200 dark:border-cyan-500/20 hover:bg-cyan-100 dark:hover:bg-cyan-500/20', description: 'WireGuard, OpenVPN, mesh' },
-  { name: 'Automation', slug: 'automation', icon: Zap, color: 'text-amber-500', bg: 'bg-amber-50 dark:bg-amber-500/10 border-amber-200 dark:border-amber-500/20 hover:bg-amber-100 dark:hover:bg-amber-500/20', description: 'Home Assistant, n8n' },
-  { name: 'CI/CD', slug: 'cicd', icon: GitBranch, color: 'text-rose-500', bg: 'bg-rose-50 dark:bg-rose-500/10 border-rose-200 dark:border-rose-500/20 hover:bg-rose-100 dark:hover:bg-rose-500/20', description: 'GitHub Actions, Jenkins' },
-  { name: 'Communication', slug: 'communication', icon: MessageSquare, color: 'text-fuchsia-500', bg: 'bg-fuchsia-50 dark:bg-fuchsia-500/10 border-fuchsia-200 dark:border-fuchsia-500/20 hover:bg-fuchsia-100 dark:hover:bg-fuchsia-500/20', description: 'Matrix, Mattermost, IRC' },
+  { name: 'Docker', slug: 'docker', icon: Box, description: 'Containerize and deploy apps' },
+  { name: 'VPS', slug: 'vps', icon: Server, description: 'Server setup and management' },
+  { name: 'Nginx', slug: 'nginx', icon: Globe, description: 'Reverse proxy and web server' },
+  { name: 'Databases', slug: 'databases', icon: Database, description: 'PostgreSQL, MySQL, Redis' },
+  { name: 'Security', slug: 'security', icon: Shield, description: 'SSL, firewalls, hardening' },
+  { name: 'Monitoring', slug: 'monitoring', icon: Activity, description: 'Uptime, metrics, alerts' },
+  { name: 'Blockchain', slug: 'blockchain', icon: Cpu, description: 'Nodes, staking, wallets' },
+  { name: 'Media', slug: 'media', icon: PlayCircle, description: 'Plex, Jellyfin, audio' },
+  { name: 'Files', slug: 'files', icon: FolderDown, description: 'Nextcloud, Syncthing, NAS' },
+  { name: 'VPN', slug: 'vpn', icon: Network, description: 'WireGuard, OpenVPN, mesh' },
+  { name: 'Automation', slug: 'automation', icon: Zap, description: 'Home Assistant, n8n' },
+  { name: 'CI/CD', slug: 'cicd', icon: GitBranch, description: 'GitHub Actions, Jenkins' },
+  { name: 'Communication', slug: 'communication', icon: MessageSquare, description: 'Matrix, Mattermost, IRC' },
 ];
 
 export default async function HomePage() {
@@ -102,90 +103,78 @@ export default async function HomePage() {
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
       />
-
-      {/* ── HERO ─────────────────────────────────────────────── */}
-      <section className="relative overflow-hidden border-b border-gray-200 dark:border-gray-800 bg-white dark:bg-gray-950">
-        {/* Grid pattern */}
-        <div
-          className="absolute inset-0 opacity-[0.04]"
-          style={{
-            backgroundImage: 'linear-gradient(currentColor 1px, transparent 1px), linear-gradient(90deg, currentColor 1px, transparent 1px)',
-            backgroundSize: '48px 48px',
-          }}
-        />
-        <div className="absolute inset-0 bg-gradient-to-b from-green-500/5 via-transparent to-transparent" />
+      {/* ── HERO SECTION ───────────────────────────────────────── */}
+      <section className="relative overflow-hidden bg-slate-50 dark:bg-gray-950">
+        <div className="absolute inset-0 bg-[url('/grid.svg')] bg-center [mask-image:linear-gradient(180deg,white,rgba(255,255,255,0))] dark:opacity-10 opacity-40"></div>
+        <div className="absolute top-0 right-0 -translate-y-12 translate-x-1/3 w-[600px] h-[600px] bg-brand-400/20 dark:bg-brand-500/10 rounded-full blur-3xl opacity-50 pointer-events-none"></div>
+        <div className="absolute bottom-0 left-0 translate-y-1/3 -translate-x-1/3 w-[500px] h-[500px] bg-slate-300/40 dark:bg-brand-900/20 rounded-full blur-3xl opacity-50 pointer-events-none"></div>
 
         <div className="relative max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-24 sm:py-32">
-          {/* Badge */}
-          <div className="inline-flex items-center gap-2 bg-green-50 dark:bg-green-500/10 border border-green-200 dark:border-green-500/20 rounded-full px-4 py-1.5 text-sm text-green-700 dark:text-green-400 font-mono mb-8">
-            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-            Open-source self-hosting guides
+          <div className="text-center max-w-3xl mx-auto">
+            <h1 className="text-5xl sm:text-6xl font-bold text-slate-900 dark:text-white tracking-tight mb-8 leading-[1.1] animate-slide-up">
+              Self-Host{' '}
+              <span className="text-transparent bg-clip-text bg-gradient-to-r from-brand-500 to-slate-600 dark:to-brand-300 drop-shadow-sm">Everything</span>
+            </h1>
+
+            <p className="text-xl text-slate-600 dark:text-gray-400 mb-10 leading-relaxed animate-slide-up" style={{ animationDelay: '100ms' }}>
+              Practical, production-ready guides for hosting your own Docker containers, VPS servers, databases, and web services. Own your infrastructure, own your data.
+            </p>
+
+            <div className="flex flex-col sm:flex-row items-center justify-center gap-4 animate-slide-up" style={{ animationDelay: '200ms' }}>
+              <Link href="/blog" className="w-full sm:w-auto flex items-center justify-center gap-2 bg-brand-600 hover:bg-brand-500 text-white text-lg font-bold px-8 py-4 rounded-2xl transition-all duration-300 shadow-[0_8px_30px_rgb(13,148,136,0.3)] hover:shadow-[0_8px_40px_rgb(13,148,136,0.5)] hover:-translate-y-1">
+                Browse All Guides
+                <ArrowRight className="w-5 h-5" />
+              </Link>
+              <Link href="/blog?category=Docker" className="w-full sm:w-auto justify-center inline-flex items-center gap-2 bg-white dark:bg-gray-800 hover:bg-slate-50 dark:hover:bg-gray-700 border border-slate-200 dark:border-gray-700 text-slate-900 dark:text-white text-lg font-bold px-8 py-4 rounded-2xl transition-all duration-300 shadow-sm hover:shadow-md hover:-translate-y-1">
+                Start with Docker
+              </Link>
+              <a href="https://vps-howtoselfhost-com.vercel.app" target="_blank" rel="noopener noreferrer" className="w-full sm:w-auto flex items-center justify-center gap-2 bg-brand-600 hover:bg-brand-500 text-white text-lg font-bold border border-slate-200 dark:border-gray-700 px-8 py-4 rounded-2xl transition-all duration-300 shadow-[0_8px_30px_rgb(20,184,166,0.3)] hover:shadow-[0_8px_40px_rgb(20,184,166,0.5)] hover:-translate-y-1">
+                Buy VPS
+                <ExternalLink className="w-5 h-5" />
+              </a>
+            </div>
           </div>
+        </div>
+      </section>
 
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-gray-900 dark:text-white leading-tight mb-6">
-            Self-Host{' '}
-            <span className="text-green-500">Everything</span>
-          </h1>
-
-          <p className="text-xl text-gray-500 dark:text-gray-400 max-w-2xl mb-10 leading-relaxed">
-            Practical, production-ready guides for hosting your own Docker containers, VPS servers, databases, and web services. Own your infrastructure, own your data.
-          </p>
-
-          <div className="flex flex-col sm:flex-row flex-wrap gap-4">
-            <Link href="/blog" className="w-full sm:w-auto justify-center inline-flex items-center gap-2 bg-green-500 hover:bg-green-600 text-white font-semibold px-6 py-3 rounded-lg transition-colors duration-200 shadow-lg shadow-green-500/20">
-              Browse All Guides
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-            <Link href="/blog?category=Docker" className="w-full sm:w-auto justify-center inline-flex items-center gap-2 bg-white dark:bg-gray-800 hover:bg-gray-50 dark:hover:bg-gray-700 border border-gray-200 dark:border-gray-700 text-gray-900 dark:text-white font-semibold px-6 py-3 rounded-lg transition-colors duration-200">
-              Start with Docker
-            </Link>
-            <a
-              href="https://vps.howtoselfhost.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="w-full sm:w-auto justify-center inline-flex items-center gap-2 bg-purple-600 hover:bg-purple-700 text-white font-semibold px-6 py-3 rounded-lg transition-colors duration-200 shadow-lg shadow-purple-500/20"
-            >
-              Buy VPS
-              <ExternalLink className="w-4 h-4" />
-            </a>
-          </div>
-
-          {/* ── LIVE STATS ── */}
-          <div className="grid grid-cols-2 lg:grid-cols-4 gap-6 sm:gap-10 mt-14 pt-10 border-t border-slate-200 dark:border-gray-800">
-            <div className="text-center sm:text-left">
-              <div className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white font-mono">
-                <LiveCounter target={stats.postCount} suffix="+" />
+      {/* ── STATS SECTION ──────────────────────────────────────── */}
+      <section className="relative z-10 -mt-12 sm:-mt-16 max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="bg-white/80 dark:bg-gray-900/80 backdrop-blur-xl border border-slate-200 dark:border-gray-700/50 rounded-3xl p-8 shadow-[0_8px_30px_rgb(0,0,0,0.04)] dark:shadow-[0_8px_30px_rgb(0,0,0,0.1)]">
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 text-center divide-x divide-slate-100 dark:divide-gray-800">
+            <div className="px-2">
+              <div className="text-4xl font-bold text-slate-900 dark:text-white mb-2 font-mono">
+                <LiveCounter target={stats.postCount} />+
               </div>
-              <div className="flex items-center gap-1.5 mt-1 justify-center sm:justify-start">
-                <BookOpen className="w-3.5 h-3.5 text-green-500" />
-                <span className="text-sm text-slate-500 dark:text-gray-500">Active guides</span>
+              <div className="flex items-center gap-1.5 justify-center mt-1">
+                <BookOpen className="w-3.5 h-3.5 text-brand-500" />
+                <span className="text-sm font-semibold text-slate-500 dark:text-gray-400">Active guides</span>
               </div>
             </div>
-            <div className="text-center sm:text-left">
-              <div className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white font-mono">
-                <LiveCounter target={stats.hoursSaved} suffix="k+" />
+            <div className="px-2">
+              <div className="text-4xl font-bold text-slate-900 dark:text-white mb-2 font-mono">
+                <LiveCounter target={stats.hoursSaved} />k+
               </div>
-              <div className="flex items-center gap-1.5 mt-1 justify-center sm:justify-start">
+              <div className="flex items-center gap-1.5 justify-center mt-1">
                 <Clock className="w-3.5 h-3.5 text-orange-500" />
-                <span className="text-sm text-slate-500 dark:text-gray-500">Hours saved searching</span>
+                <span className="text-sm font-semibold text-slate-500 dark:text-gray-400">Hours saved searching</span>
               </div>
             </div>
-            <div className="text-center sm:text-left">
-              <div className="text-3xl sm:text-4xl font-bold text-slate-900 dark:text-white font-mono">
-                <LiveCounter target={stats.readers} suffix="+" />
+            <div className="px-2">
+              <div className="text-4xl font-bold text-slate-900 dark:text-white mb-2 font-mono">
+                <LiveCounter target={stats.readers} />+
               </div>
-              <div className="flex items-center gap-1.5 mt-1 justify-center sm:justify-start">
+              <div className="flex items-center gap-1.5 justify-center mt-1">
                 <Users className="w-3.5 h-3.5 text-purple-500" />
-                <span className="text-sm text-slate-500 dark:text-gray-500">Monthly readers</span>
+                <span className="text-sm font-semibold text-slate-500 dark:text-gray-400">Monthly readers</span>
               </div>
             </div>
-            <div className="text-center sm:text-left">
-              <div className="text-3xl sm:text-4xl font-bold text-green-500 font-mono">
+            <div className="px-2">
+              <div className="text-4xl font-bold text-brand-500 mb-2 font-mono">
                 100%
               </div>
-              <div className="flex items-center gap-1.5 mt-1 justify-center sm:justify-start">
-                <ShieldCheck className="w-3.5 h-3.5 text-green-500" />
-                <span className="text-sm text-slate-500 dark:text-gray-500">Technical accuracy</span>
+              <div className="flex items-center gap-1.5 justify-center mt-1">
+                <ShieldCheck className="w-3.5 h-3.5 text-brand-500" />
+                <span className="text-sm font-semibold text-slate-500 dark:text-gray-400">Technical accuracy</span>
               </div>
             </div>
           </div>
@@ -193,15 +182,11 @@ export default async function HomePage() {
       </section>
 
       {/* ── VALUE PROPOSITION CHART ── */}
-      <section className="bg-slate-50 dark:bg-gray-900/40 border-b border-gray-200 dark:border-gray-800">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20 lg:py-28">
+      <section className="bg-white dark:bg-gray-950 border-b border-slate-200 dark:border-gray-800 py-24">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
             {/* Left Box: Value Text */}
             <div>
-              <div className="inline-flex items-center gap-2 bg-blue-50 dark:bg-blue-500/10 border border-blue-200 dark:border-blue-500/20 rounded-full px-4 py-1.5 text-sm text-blue-700 dark:text-blue-400 font-mono mb-6">
-                <Zap className="w-4 h-4" />
-                Why read our guides?
-              </div>
               <h2 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-slate-900 dark:text-white mb-6 leading-tight">
                 Stop wasting hours on <span className="text-red-500">broken</span> tutorials
               </h2>
@@ -216,12 +201,12 @@ export default async function HomePage() {
                   { title: "Zero Troubleshooting", desc: "Every configuration is rigorously tested by us." }
                 ].map((item, i) => (
                   <li key={i} className="flex gap-4">
-                    <div className="flex-shrink-0 w-6 h-6 rounded-full bg-green-500/20 flex items-center justify-center mt-0.5">
-                      <div className="w-2.5 h-2.5 rounded-full bg-green-500" />
+                    <div className="flex-shrink-0 w-8 h-8 rounded-full bg-brand-500/20 flex items-center justify-center">
+                      <div className="w-3 h-3 rounded-full bg-brand-500" />
                     </div>
                     <div>
-                      <h3 className="font-semibold text-slate-900 dark:text-white">{item.title}</h3>
-                      <p className="text-sm text-slate-600 dark:text-gray-400 mt-1 pl-0.5">{item.desc}</p>
+                      <h3 className="font-bold text-lg text-slate-900 dark:text-white">{item.title}</h3>
+                      <p className="text-base text-slate-600 dark:text-gray-400 mt-1">{item.desc}</p>
                     </div>
                   </li>
                 ))}
@@ -229,53 +214,53 @@ export default async function HomePage() {
             </div>
 
             {/* Right Box: CSS Chart */}
-            <div className="bg-white dark:bg-gray-950 border border-slate-200 dark:border-gray-800 rounded-3xl p-7 sm:p-10 shadow-xl shadow-slate-200/50 dark:shadow-none relative overflow-hidden">
-              <div className="absolute top-0 right-0 w-64 h-64 bg-green-500/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none" />
+            <div className="bg-slate-50 dark:bg-gray-900 border border-slate-200 dark:border-gray-800 rounded-3xl p-7 sm:p-10 shadow-xl shadow-slate-200/50 dark:shadow-none relative overflow-hidden">
+              <div className="absolute top-0 right-0 w-64 h-64 bg-brand-500/5 rounded-full blur-3xl -translate-y-1/2 translate-x-1/3 pointer-events-none" />
 
               <h3 className="text-xl font-bold text-slate-900 dark:text-white mb-10">Average Time to Production</h3>
 
               <div className="space-y-10 relative z-10">
                 {/* Competitor / Standard search */}
                 <div>
-                  <div className="flex justify-between text-sm sm:text-base mb-3">
-                    <span className="font-medium text-slate-600 dark:text-gray-400">Random Internet Searches</span>
-                    <span className="font-mono text-slate-500 dark:text-gray-500">15 hrs</span>
+                  <div className="flex justify-between text-sm sm:text-base mb-3 font-bold">
+                    <span className="text-slate-600 dark:text-gray-400">Random Internet Searches</span>
+                    <span className="text-slate-500 dark:text-gray-500">15 hrs</span>
                   </div>
-                  <div className="w-full bg-slate-100 dark:bg-gray-800 rounded-full h-5 overflow-hidden flex shadow-inner">
+                  <div className="w-full bg-slate-200 dark:bg-gray-800 rounded-full h-5 overflow-hidden flex shadow-inner">
                     <div className="bg-red-400 dark:bg-red-500/80 h-full w-[85%] rounded-full relative group">
                       <div className="absolute right-0 top-0 bottom-0 w-full animate-pulse bg-gradient-to-r from-transparent to-white/20" />
                     </div>
                   </div>
-                  <p className="text-xs sm:text-sm text-red-500 dark:text-red-400 mt-3 font-medium flex items-center gap-1.5">
+                  <p className="text-xs sm:text-sm text-red-500 dark:text-red-400 mt-3 font-bold flex items-center gap-1.5">
                     <Activity className="w-3.5 h-3.5" /> High configuration drift
                   </p>
                 </div>
 
                 {/* Our guides */}
                 <div>
-                  <div className="flex justify-between text-sm sm:text-base mb-3">
-                    <span className="font-bold text-green-600 dark:text-green-400">howtoselfhost.com</span>
-                    <span className="font-mono font-bold text-green-600 dark:text-green-400">2 hrs</span>
+                  <div className="flex justify-between text-sm sm:text-base mb-3 font-bold">
+                    <span className="text-brand-600 dark:text-brand-400">howtoselfhost.com</span>
+                    <span className="text-brand-600 dark:text-brand-400">2 hrs</span>
                   </div>
-                  <div className="w-full bg-slate-100 dark:bg-gray-800 rounded-full h-5 overflow-hidden flex shadow-inner">
-                    <div className="bg-green-500 dark:bg-green-500 h-full w-[15%] rounded-full shadow-[0_0_15px_rgba(34,197,94,0.4)] relative">
-                      <div className="absolute right-0 top-0 bottom-0 w-8 bg-gradient-to-r from-transparent to-white/30" />
+                  <div className="w-full bg-slate-200 dark:bg-gray-800 rounded-full h-5 overflow-hidden flex shadow-inner">
+                    <div className="bg-brand-500 h-full w-[15%] rounded-full relative">
+                      <div className="absolute right-0 top-0 bottom-0 w-full animate-pulse bg-gradient-to-r from-transparent to-white/20" />
                     </div>
                   </div>
-                  <p className="text-xs sm:text-sm text-green-600 dark:text-green-400 mt-3 font-medium flex items-center gap-1.5">
+                  <p className="text-xs sm:text-sm text-brand-600 dark:text-brand-400 mt-3 font-bold flex items-center gap-1.5">
                     <ShieldCheck className="w-3.5 h-3.5" /> Ready-to-deploy configs
                   </p>
                 </div>
               </div>
 
               {/* Extra stat widget */}
-              <div className="mt-12 p-5 sm:p-6 rounded-2xl bg-slate-50 border border-slate-100 dark:bg-gray-900/80 dark:border-gray-800 flex items-center gap-5 relative z-10 transition-transform duration-300 hover:scale-[1.02]">
-                <div className="w-14 h-14 rounded-xl bg-green-100 dark:bg-green-500/20 text-green-600 dark:text-green-400 flex items-center justify-center flex-shrink-0 shadow-sm">
-                  <Clock className="w-7 h-7" />
+              <div className="mt-12 p-6 rounded-2xl bg-white dark:bg-gray-950 border border-slate-200 dark:border-gray-800 flex items-center gap-5 relative z-10">
+                <div className="w-14 h-14 rounded-2xl bg-brand-50 dark:bg-brand-900/30 flex items-center justify-center flex-shrink-0">
+                  <Clock className="w-6 h-6 text-brand-500" />
                 </div>
                 <div>
-                  <div className="text-3xl font-bold text-slate-900 dark:text-white font-mono leading-none mb-1.5 flex items-end gap-1">
-                    86% <span className="text-sm font-sans font-medium text-slate-600 dark:text-gray-400 mb-1">faster</span>
+                  <div className="text-3xl font-bold text-slate-900 dark:text-white mb-1 flex items-end gap-2">
+                    86% <span className="text-base font-medium text-slate-600 dark:text-gray-400 mb-1">faster</span>
                   </div>
                   <div className="text-sm text-slate-600 dark:text-gray-400">
                     Average deployment time reduction.
@@ -289,38 +274,55 @@ export default async function HomePage() {
 
       {/* ── HOT POSTS ────────────────────────────────────────── */}
       {hotPosts.length > 0 && (
-        <section className="bg-white dark:bg-gray-950 border-b border-gray-100 dark:border-gray-800/50">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-14">
-            <div className="flex items-center justify-between mb-7">
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-lg bg-orange-50 dark:bg-orange-500/10 border border-orange-200 dark:border-orange-500/20 flex items-center justify-center">
-                  <Flame className="w-4 h-4 text-orange-500" />
+        <section className="relative overflow-hidden bg-slate-50/50 dark:bg-gray-950/80 border-b border-slate-200/60 dark:border-gray-800/60">
+          <div className="absolute top-0 right-0 w-96 h-96 bg-brand-500/10 rounded-full blur-[100px] translate-x-1/3 -translate-y-1/2 pointer-events-none"></div>
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20 relative z-10">
+            <div className="flex flex-col sm:flex-row items-start sm:items-center justify-between mb-12 gap-6">
+              <div className="flex items-center gap-4">
+                <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-brand-400 to-brand-600 flex items-center justify-center shadow-lg shadow-brand-500/30">
+                  <Flame className="w-6 h-6 text-white" />
                 </div>
                 <div>
-                  <h2 className="text-xl font-bold text-gray-900 dark:text-white">Hot Right Now</h2>
-                  <p className="text-xs text-gray-500 dark:text-gray-400">Most recently published</p>
+                  <h2 className="text-3xl font-bold text-slate-900 dark:text-white tracking-tight">Hot Right Now</h2>
+                  <p className="text-sm text-slate-500 dark:text-gray-400 font-medium mt-1">Most recently published guides</p>
                 </div>
               </div>
-              <Link href="/blog" className="text-sm text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 font-medium flex items-center gap-1 transition-colors duration-200">
-                View all <ArrowRight className="w-3.5 h-3.5" />
+              <Link href="/blog" className="text-sm font-bold text-brand-600 dark:text-brand-400 hover:text-white transition-all duration-300 flex items-center gap-2 bg-brand-50 hover:bg-brand-500 dark:bg-brand-900/20 dark:hover:bg-brand-500 px-5 py-2.5 rounded-full shadow-sm hover:shadow-brand-500/25 group/btn">
+                View all <ArrowRight className="w-4 h-4 group-hover/btn:translate-x-1 transition-transform" />
               </Link>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-3">
+            <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
               {hotPosts.map((post, index) => (
                 <Link
                   key={post.id}
                   href={`/blog/${post.slug}`}
-                  className="group flex items-start gap-3 p-4 rounded-xl border border-gray-200 dark:border-gray-800 bg-gray-50 dark:bg-gray-900/50 hover:border-orange-300 dark:hover:border-orange-500/40 hover:bg-orange-50 dark:hover:bg-orange-500/5 transition-all duration-200"
+                  className="group flex flex-col rounded-3xl border border-white/20 dark:border-gray-800 bg-white/70 dark:bg-gray-900/50 backdrop-blur-md shadow-lg hover:shadow-2xl hover:-translate-y-2 hover:border-brand-300 dark:hover:border-brand-500/50 transition-all duration-500 overflow-hidden"
                 >
-                  <span className="flex-shrink-0 w-8 h-8 rounded-lg bg-white dark:bg-gray-800 border border-orange-200 dark:border-orange-500/30 flex items-center justify-center text-sm font-bold text-orange-500 font-mono shadow-sm">
-                    {index + 1}
-                  </span>
-                  <div className="min-w-0">
-                    <p className="text-sm font-semibold text-gray-900 dark:text-white group-hover:text-orange-600 dark:group-hover:text-orange-400 transition-colors duration-200 leading-snug line-clamp-2 mb-1.5">
+                  <div className="block relative w-full overflow-hidden flex-shrink-0 h-[220px]">
+                    <img
+                      src={post.coverImage || `https://dummyimage.com/800x400/0f172a/14b8a6.png&text=${encodeURIComponent(post.category)}`}
+                      alt={post.title}
+                      className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-700 ease-out"
+                    />
+                    <div className="absolute inset-0 bg-gradient-to-t from-slate-900/80 via-slate-900/20 to-transparent pointer-events-none opacity-60 group-hover:opacity-80 transition-opacity duration-500" />
+                    
+                    <div className="absolute top-3 left-3 flex gap-2">
+                      <span className="flex-shrink-0 w-8 h-8 rounded-full bg-white/20 dark:bg-black/40 backdrop-blur-md border border-white/30 flex items-center justify-center text-xs font-bold text-white shadow-sm">
+                        #{index + 1}
+                      </span>
+                    </div>
+                    <div className="absolute bottom-3 left-3">
+                      <span className="text-[10px] font-bold text-white bg-brand-500/90 px-2.5 py-1 rounded-md uppercase tracking-wider backdrop-blur-sm border border-brand-400/50 shadow-sm">
+                        {post.category}
+                      </span>
+                    </div>
+                  </div>
+                  
+                  <div className="p-5 flex-1 flex flex-col justify-between">
+                    <p className="text-lg font-bold text-slate-900 dark:text-white group-hover:text-brand-600 dark:group-hover:text-brand-400 transition-colors duration-200 leading-snug line-clamp-3">
                       {post.title}
                     </p>
-                    <p className="text-xs text-gray-500 dark:text-gray-400 font-mono">{post.category} · {post.readingTime} min read</p>
                   </div>
                 </Link>
               ))}
@@ -331,19 +333,19 @@ export default async function HomePage() {
 
       {/* ── FEATURED POSTS ───────────────────────────────────── */}
       {featuredPosts.length > 0 && (
-        <section className="bg-gray-50 dark:bg-gray-900/30 border-b border-gray-200 dark:border-gray-800">
-          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-            <div className="flex items-center justify-between mb-8">
+        <section className="bg-white dark:bg-gray-950 border-b border-slate-200/60 dark:border-gray-800/60">
+          <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+            <div className="flex items-center justify-between mb-10">
               <div>
-                <h2 className="text-2xl font-bold text-gray-900 dark:text-white">Featured Guides</h2>
-                <p className="text-gray-500 dark:text-gray-400 text-sm mt-1">Hand-picked articles to get you started</p>
+                <h2 className="text-3xl font-bold text-slate-900 dark:text-white">Featured Guides</h2>
+                <p className="text-slate-500 dark:text-gray-400 font-medium mt-2">Hand-picked articles to get you started on the right foot</p>
               </div>
-              <Link href="/blog" className="text-sm text-green-600 dark:text-green-400 hover:text-green-700 dark:hover:text-green-300 font-medium flex items-center gap-1 transition-colors duration-200">
+              <Link href="/blog" className="text-sm font-bold text-brand-600 dark:text-brand-400 hover:text-brand-700 transition-colors duration-200 flex items-center gap-1 bg-brand-50 hover:bg-brand-100 dark:bg-brand-900/20 dark:hover:bg-brand-900/40 px-4 py-2 rounded-xl">
                 View all <ArrowRight className="w-4 h-4" />
               </Link>
             </div>
 
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
               {featuredPosts.map((post) => (
                 <PostCard key={post.id} post={post} featured />
               ))}
@@ -353,17 +355,17 @@ export default async function HomePage() {
       )}
 
       {/* ── CATEGORIES ───────────────────────────────────────── */}
-      <section className="bg-white dark:bg-gray-950 border-b border-gray-200 dark:border-gray-800">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-          <div className="text-center mb-10">
-            <h2 className="text-2xl font-bold text-gray-900 dark:text-white mb-3">Browse by Topic</h2>
-            <p className="text-gray-500 dark:text-gray-400">Find guides organized by technology and use case</p>
+      <section className="bg-slate-50/50 dark:bg-gray-950 border-b border-slate-200/60 dark:border-gray-800/60">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+          <div className="text-center mb-12">
+            <h2 className="text-3xl font-bold text-slate-900 dark:text-white mb-3">Browse by Topic</h2>
+            <p className="text-slate-500 dark:text-gray-400 font-medium">Find guides organized by technology and use case</p>
           </div>
           <style dangerouslySetInnerHTML={{
             __html: `
             @keyframes scroll {
               0% { transform: translateX(0); }
-              100% { transform: translateX(calc(-50% - 0.5rem)); }
+              100% { transform: translateX(calc(-50% - 1rem)); }
             }
             .animate-scroll {
               animation: scroll 40s linear infinite;
@@ -374,22 +376,21 @@ export default async function HomePage() {
             }
           ` }} />
           <div className="overflow-hidden w-full relative">
-            {/* Gradient masks for smooth fading at the edges */}
-            <div className="absolute left-0 top-0 bottom-0 w-8 z-10 bg-gradient-to-r from-white dark:from-gray-950 to-transparent pointer-events-none" />
-            <div className="absolute right-0 top-0 bottom-0 w-8 z-10 bg-gradient-to-l from-white dark:from-gray-950 to-transparent pointer-events-none" />
+            <div className="absolute left-0 top-0 bottom-0 w-24 z-10 bg-gradient-to-r from-slate-50 dark:from-gray-950 to-transparent pointer-events-none" />
+            <div className="absolute right-0 top-0 bottom-0 w-24 z-10 bg-gradient-to-l from-slate-50 dark:from-gray-950 to-transparent pointer-events-none" />
 
-            <div className="animate-scroll w-max gap-4 py-2 px-1">
+            <div className="animate-scroll w-max gap-6 py-4 px-2">
               {[...categories, ...categories].map((cat, index) => {
                 const Icon = cat.icon;
                 return (
                   <Link key={`${cat.slug}-${index}`} href={`/blog?category=${cat.name}`}
-                    className={`flex-shrink-0 w-48 group flex flex-col items-center text-center p-5 rounded-xl border transition-all duration-200 ${cat.bg}`}
+                    className="flex-shrink-0 w-56 group flex flex-col items-center text-center p-6 rounded-3xl border border-slate-200 dark:border-gray-800 bg-white dark:bg-gray-900 hover:border-brand-400 dark:hover:border-brand-500/50 hover:shadow-xl hover:-translate-y-2 transition-all duration-300"
                   >
-                    <div className="w-10 h-10 rounded-xl flex items-center justify-center mb-3 group-hover:scale-110 transition-transform duration-200">
-                      <Icon className={`w-5 h-5 ${cat.color}`} />
+                    <div className="w-14 h-14 rounded-2xl bg-brand-50 dark:bg-brand-900/30 text-brand-600 dark:text-brand-400 flex items-center justify-center mb-4 group-hover:scale-110 group-hover:bg-brand-500 group-hover:text-white transition-all duration-300 shadow-sm">
+                      <Icon className="w-6 h-6" />
                     </div>
-                    <div className={`text-sm font-semibold ${cat.color}`}>{cat.name}</div>
-                    <div className="text-xs text-gray-600 dark:text-gray-400 mt-1">{cat.description}</div>
+                    <div className="text-lg font-bold text-slate-900 dark:text-white">{cat.name}</div>
+                    <div className="text-sm text-slate-500 dark:text-gray-400 mt-2">{cat.description}</div>
                   </Link>
                 );
               })}
@@ -399,46 +400,45 @@ export default async function HomePage() {
       </section>
 
       {/* ── BUY VPS BANNER ───────────────────────────────────── */}
-      <section className="bg-gradient-to-r from-purple-600 to-blue-600">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
-            <div>
-              <div className="flex items-center gap-2 mb-2">
-                <Server className="w-5 h-5 text-white/80" />
-                <h2 className="text-xl font-bold text-white">Need a VPS to self-host?</h2>
+      <section className="bg-white dark:bg-gray-950 border-b border-slate-200/60 dark:border-gray-800/60">
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 py-20">
+          <div className="relative overflow-hidden rounded-3xl bg-gradient-to-br from-slate-900 to-slate-800 dark:from-gray-900 dark:to-gray-950 border border-slate-800 p-10 sm:p-14 shadow-2xl shadow-slate-900/20">
+            <div className="absolute top-0 right-0 -translate-y-12 translate-x-1/3 w-64 h-64 bg-brand-500/20 rounded-full blur-3xl opacity-50 pointer-events-none"></div>
+            
+            <div className="relative z-10 flex flex-col md:flex-row items-center justify-between gap-10 text-center md:text-left">
+              <div>
+                <h2 className="text-3xl sm:text-4xl font-bold text-white mb-4">Need a VPS to self-host?</h2>
+                <p className="text-slate-300 text-lg max-w-xl">
+                  Fast, affordable, and reliable VPS servers. Ready to deploy your Docker stack in seconds. Start from $4/month.
+                </p>
               </div>
-              <p className="text-purple-100">
-                Fast, affordable VPS servers — ready to deploy in seconds. Start from $4/month.
-              </p>
+              <a
+                href="https://vps-howtoselfhost-com.vercel.app"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="flex-shrink-0 inline-flex items-center gap-2 bg-brand-500 hover:bg-brand-400 text-white font-bold text-lg px-8 py-4 rounded-2xl transition-all duration-300 shadow-[0_0_20px_rgb(20,184,166,0.3)] hover:shadow-[0_0_30px_rgb(20,184,166,0.5)] hover:-translate-y-1"
+              >
+                Buy a VPS Now
+                <ExternalLink className="w-5 h-5" />
+              </a>
             </div>
-            <a
-              href="https://vps.howtoselfhost.com"
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex-shrink-0 inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-purple-700 font-bold px-7 py-3 rounded-lg transition-colors duration-200 shadow-lg"
-            >
-              Buy a VPS Now
-              <ExternalLink className="w-4 h-4" />
-            </a>
           </div>
         </div>
       </section>
 
       {/* ── CTA ──────────────────────────────────────────────── */}
-      <section className="bg-white dark:bg-gray-950 border-t border-gray-200 dark:border-gray-800">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-16 text-center">
-          <div className="max-w-2xl mx-auto">
-            <h2 className="text-3xl font-bold text-gray-900 dark:text-white mb-4">Ready to self-host?</h2>
-            <p className="text-gray-500 dark:text-gray-400 mb-8">
-              Start with our beginner-friendly Docker guide and work your way up to a full self-hosted stack.
-            </p>
-            <Link href="/blog/getting-started-with-docker-self-host-your-first-app"
-              className="inline-flex items-center gap-2 bg-green-600 hover:bg-green-700 text-white font-semibold px-8 py-3 rounded-lg transition-colors duration-200 shadow-lg shadow-green-500/20"
-            >
-              Start Learning
-              <ArrowRight className="w-4 h-4" />
-            </Link>
-          </div>
+      <section className="bg-slate-50/50 dark:bg-gray-950">
+        <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-24 text-center">
+          <h2 className="text-4xl sm:text-5xl font-bold text-slate-900 dark:text-white mb-6">Ready to own your data?</h2>
+          <p className="text-xl text-slate-600 dark:text-gray-400 mb-10 leading-relaxed">
+            Start with our beginner-friendly Docker guide and work your way up to a full self-hosted stack. No prior DevOps experience required.
+          </p>
+          <Link href="/blog/getting-started-with-docker-self-host-your-first-app"
+            className="inline-flex items-center justify-center gap-2 bg-brand-600 hover:bg-brand-500 text-white font-bold text-xl px-10 py-5 rounded-2xl transition-all duration-300 shadow-[0_8px_30px_rgb(13,148,136,0.3)] hover:shadow-[0_8px_40px_rgb(13,148,136,0.5)] hover:-translate-y-1"
+          >
+            Start Learning Now
+            <ArrowRight className="w-6 h-6" />
+          </Link>
         </div>
       </section>
 
