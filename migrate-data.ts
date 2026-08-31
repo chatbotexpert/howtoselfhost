@@ -27,6 +27,7 @@ async function main() {
         color: c.color,
         icon: c.icon
       })),
+      // @ts-ignore - skipDuplicates is not supported by all Prisma providers but needed for this migration
       skipDuplicates: true,
     });
     console.log('Categories migrated successfully.');
@@ -56,6 +57,7 @@ async function main() {
         updatedAt: new Date(p.updatedAt),
         publishedAt: p.publishedAt ? new Date(p.publishedAt) : null,
       })),
+      // @ts-ignore - skipDuplicates is not supported by all Prisma providers but needed for this migration
       skipDuplicates: true,
     });
     console.log('Posts migrated successfully.');
