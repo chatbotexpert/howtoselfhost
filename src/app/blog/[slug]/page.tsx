@@ -137,7 +137,7 @@ export default async function BlogPostPage({ params }: PageProps) {
             alt={post.title}
             fill
             priority
-            className="object-contain drop-shadow-lg"
+            className="object-cover drop-shadow-lg"
             sizes="100vw"
           />
           <div className="absolute inset-0 bg-gradient-to-b from-transparent via-black/5 to-black/20 dark:via-gray-950/20 dark:to-gray-950" />
