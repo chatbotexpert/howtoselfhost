@@ -28,7 +28,8 @@ async function getPost(slug: string): Promise<Post | null> {
     if (!post) return null;
     const { tags, ...p } = post;
     return { ...p, tags: tags ? (JSON.parse(tags) as string[]) : [] } as Post;
-  } catch {
+  } catch (error) {
+    console.error(`Error in getPost for slug ${slug}:`, error);
     return null;
   }
 }
@@ -84,23 +85,17 @@ export async function generateMetadata({ params }: PageProps): Promise<Metadata>
   };
 }
 
-export async function generateStaticParams() {
-  try {
-    const posts = await prisma.post.findMany({
-      where: { published: true },
-      select: { slug: true },
-    });
-    return posts.map((p) => ({ slug: p.slug }));
-  } catch {
-    return [];
-  }
-}
+
 
 export default async function BlogPostPage({ params }: PageProps) {
-  const { slug } = await params;
+  const resolvedParams = await params;
+  const slug = decodeURIComponent(resolvedParams.slug);
+  console.log("BLOG PAGE HIT - SLUG:", slug);
   const post = await getPost(slug);
+  console.log("POST FOUND?", !!post);
 
   if (!post) {
+    console.log("POST NOT FOUND, TRIGGERING 404");
     notFound();
   }
 
